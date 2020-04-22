@@ -23,11 +23,11 @@ Running `npm start` will start the webpack dev server with hot-reloading turned 
 
 The entry point for the entire TypeScript application is `./src/index.ts`. Any other file imported in this file will be included in the build.
 
-To debug, open the browser's dev tool, or in case you are using VSCode, simply run the default debugger task (`Launch Chrome against localhost`). This will allow you to debug your application straight in your editor.
+To debug, open the browser's dev tool. Source maps are ready to be used. In case you are using VSCode, simply run the default debugger task (`Launch Chrome against localhost`) while making sure `npm start` is still running. This will allow you to debug your application straight in your editor.
 
 ## What else can I do
 
-To use eslint to lint your source code run `npm run lint`
+To lint your source code run `npm run lint`
 
 To build the bundle in order to host it, run `npm run build`. This will bundle your code in production mode, meaning is will minify the code.
 
@@ -42,9 +42,9 @@ The rest? You should know already, this is why you are here.
 ## What is covered
 
 - Latest typescript version
+- Simple texture loading (using url-loader)
 - dev-server will start on command (webpack-dev-server)
 - A working core-only example of babylon
-- full debugging with any browser AND vs-code
+- Full debugging with any browser AND VS Code
 - (production) bundle builder.
 - eslint default typescript rules integrated
-- Simple texture loading (using url-loader)
