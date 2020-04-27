@@ -9,7 +9,7 @@ const {
 const appDirectory = fs.realpathSync(process.cwd());
 
 module.exports = {
-    entry: path.resolve(appDirectory, "src"),
+    entry: path.resolve(appDirectory, "src/index.ts"),
     output: {
         filename: 'js/babylonBundle.js',
     },

@@ -11,10 +11,7 @@
         "strictFunctionTypes": true,
         "skipLibCheck": true,
 		"preserveConstEnums":true,
-		"sourceMap": true
-	},
-	"files": [
-        "src/index.ts",
-        "src/externalFileTypes.d.ts"
-	]
+        "sourceMap": true,
+        "rootDir": "src"
+	}
 }
