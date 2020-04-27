@@ -4,3 +4,5 @@ node_modules
 dist
 # Don't lint webpack config
 webpack.*
+# rollup
+rollup.*
