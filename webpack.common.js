@@ -1,7 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {
+    CleanWebpackPlugin
+} = require('clean-webpack-plugin');
 
 // App directory
 const appDirectory = fs.realpathSync(process.cwd());
@@ -15,8 +17,7 @@ module.exports = {
         extensions: ['.ts', '.js']
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.(js|mjs|jsx|ts|tsx)$/,
                 loader: 'source-map-loader',
                 enforce: 'pre',
@@ -42,5 +43,9 @@ module.exports = {
             inject: true,
             template: path.resolve(appDirectory, "public/index.html"),
         }),
-    ]
+    ],
+    // Just for ammo
+    node: {
+        fs: 'empty'
+    }
 }
