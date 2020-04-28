@@ -4,12 +4,13 @@
     "description": "A simple scene using Babylon.js, typescript and webpack. What could go wrong?",
     "main": "index.ts",
     "dependencies": {
-        "@babylonjs/core": "^4.2.0-alpha.11",
+        "@babylonjs/core": "preview",
+        "@babylonjs/loaders": "preview",
         "ammo.js": "github:kripken/ammo.js"
     },
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^2.29.0",
-        "@typescript-eslint/parser": "^2.29.0",
+        "@typescript-eslint/eslint-plugin": "^2.30.0",
+        "@typescript-eslint/parser": "^2.30.0",
         "clean-webpack-plugin": "^3.0.0",
         "eslint": "^6.8.0",
         "file-loader": "^6.0.0",
