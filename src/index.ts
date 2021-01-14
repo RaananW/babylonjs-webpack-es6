@@ -1,14 +1,7 @@
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { getSceneModuleWithName } from "./createScene";
 
-const getModuleToLoad = (): string | undefined => {
-    // ATM using location.search
-    if(!location.search) {
-        return;
-    } else {
-        return location.search.substr(location.search.indexOf('scene=') + 6);
-    }
-}
+const getModuleToLoad = (): string | undefined => location.search.split('scene=')[1];
 
 export const babylonInit = async (): Promise<void>  => {
     // get the module to load
