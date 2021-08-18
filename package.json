@@ -4,25 +4,25 @@
     "description": "A simple scene using Babylon.js, typescript and webpack. What could go wrong?",
     "main": "index.ts",
     "dependencies": {
-        "@babylonjs/core": "5.0.0-alpha.6",
-        "@babylonjs/loaders": "5.0.0-alpha.6",
+        "@babylonjs/core": "5.0.0-alpha.37",
+        "@babylonjs/loaders": "5.0.0-alpha.37",
         "ammo.js": "github:kripken/ammo.js"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^2.30.0",
         "@typescript-eslint/parser": "^2.30.0",
         "clean-webpack-plugin": "^3.0.0",
-        "eslint": "^7.26.0",
+        "eslint": "^7.32.0",
         "file-loader": "^6.2.0",
         "html-webpack-plugin": "^4.5.2",
-        "source-map-loader": "^2.0.1",
-        "ts-loader": "^8.2.0",
-        "typescript": "^4.2.4",
+        "source-map-loader": "^2.0.2",
+        "ts-loader": "^8.3.0",
+        "typescript": "^4.3.5",
         "url-loader": "^4.1.1",
-        "webpack": "^5.37.0",
-        "webpack-cli": "^4.7.0",
+        "webpack": "^5.50.0",
+        "webpack-cli": "^4.8.0",
         "webpack-dev-server": "^3.11.2",
-        "webpack-merge": "^5.7.3"
+        "webpack-merge": "^5.8.0"
     },
     "scripts": {
         "start": "npx webpack serve --config webpack.dev.js",
