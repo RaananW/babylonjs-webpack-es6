@@ -15,7 +15,7 @@
         "eslint": "^7.32.0",
         "file-loader": "^6.2.0",
         "html-webpack-plugin": "^5.5.0",
-        "source-map-loader": "^2.0.2",
+        "source-map-loader": "^3.0.0",
         "ts-loader": "^8.3.0",
         "typescript": "^4.5.2",
         "url-loader": "^4.1.1",
