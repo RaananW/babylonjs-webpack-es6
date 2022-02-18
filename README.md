@@ -31,6 +31,10 @@ The `./src/scenes` directory contains a few examples of scenes that can be loade
 
 More and more scenes will be slowly added.
 
+## WebGPU? yes please!
+
+Open the URL in a webgpu-enabled browser and add "?engine=webgpu" to the URL. If you want to add a different scene, add it as a query parameter: `http://localhost:8080/?scene=physicsWithAmmo&engine=webgpu`.
+
 ## What else can I do
 
 To lint your source code run `npm run lint`
