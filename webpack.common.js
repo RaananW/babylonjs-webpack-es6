@@ -23,9 +23,6 @@ module.exports = {
         rules: [
             {
                 test: /\.m?js/,
-                resolve: {
-                    fullySpecified: false,
-                },
             },
             {
                 test: /\.(js|mjs|jsx|ts|tsx)$/,
@@ -35,6 +32,7 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 loader: "ts-loader",
+                // sideEffects: true
             },
             {
                 test: /\.(png|jpg|gif|env|glb|stl)$/i,
