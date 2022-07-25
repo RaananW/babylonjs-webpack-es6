@@ -37,7 +37,7 @@ module.exports = {
                 // sideEffects: true
             },
             {
-                test: /\.(png|jpg|gif|env|glb|stl)$/i,
+                test: /\.(png|jpg|gif|env|glb|gltf|stl)$/i,
                 use: [
                     {
                         loader: "url-loader",
