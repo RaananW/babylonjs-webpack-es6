@@ -19,6 +19,9 @@ import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator"
 
 import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
 
+import fresnelVertexShader from "../glsl/fresnel/vertex.glsl";
+import fresnelFragmentShader from "../glsl/fresnel/fragment.glsl";
+
 export class BasicShaderScene implements CreateSceneClass {
     createScene = async (
         engine: Engine,
@@ -76,63 +79,21 @@ export class BasicShaderScene implements CreateSceneClass {
         sphere.position.y = 1;
 
         // Add shaders to the store
-        Effect.ShadersStore["basicVertexShader"] = `
-        precision highp float;
-
-        // Attributes
-        attribute vec3 position;
-        attribute vec3 normal;
-
-        // Uniforms
-        uniform mat4 world;
-        uniform mat4 worldViewProjection;
-
-        // Varying
-        varying vec3 vPositionW;
-        varying vec3 vNormalW;
-
-        void main(void) {
-            vec4 outPosition = worldViewProjection * vec4(position, 1.0);
-            gl_Position = outPosition;
-            
-            vPositionW = vec3(world * vec4(position, 1.0));
-            vNormalW = normalize(vec3(world * vec4(normal, 0.0)));
-        }`;
-
-        Effect.ShadersStore["basicFragmentShader"] = `
-        precision highp float;
-
-        // Lights
-        varying vec3 vPositionW;
-        varying vec3 vNormalW;
-
-        // Refs
-        uniform vec3 cameraPosition;
-        uniform sampler2D textureSampler;
-
-        void main(void) {
-            vec3 color = vec3(1., 1., 1.);
-            vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
-
-            // Fresnel
-            float fresnelTerm = dot(viewDirectionW, vNormalW);
-            fresnelTerm = clamp(1.0 - fresnelTerm, 0., 1.);
-
-            gl_FragColor = vec4(color * fresnelTerm, 1.);
-        }`;
+        Effect.ShadersStore["fresnelVertexShader"] = fresnelVertexShader;
+        Effect.ShadersStore["fresnelFragmentShader"] = fresnelFragmentShader;
 
         // Create shader material to use with the sphere
         const shaderMaterial = new ShaderMaterial(
-            "basic",
+            "fresnel",
             scene,
             {
-                vertex: "basic",
-                fragment: "basic",
+                vertex: "fresnel",
+                fragment: "fresnel",
             },
             {
                 attributes: ["position", "normal"],
                 defines: [],
-                samplers: ["textureSampler"],
+                samplers: [],
                 uniforms: ["cameraPosition", "world", "worldViewProjection"],
             }
         );
