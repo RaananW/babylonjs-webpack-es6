@@ -22,7 +22,7 @@ import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
 import fresnelVertexShader from "../glsl/fresnel/vertex.glsl";
 import fresnelFragmentShader from "../glsl/fresnel/fragment.glsl";
 
-export class BasicShaderScene implements CreateSceneClass {
+export class FresnelShaderScene implements CreateSceneClass {
     createScene = async (
         engine: Engine,
         canvas: HTMLCanvasElement
@@ -98,7 +98,6 @@ export class BasicShaderScene implements CreateSceneClass {
             }
         );
 
-        // Set Sphere material to the shader material
         sphere.material = shaderMaterial;
 
         // Our built-in 'ground' shape.
@@ -130,4 +129,4 @@ export class BasicShaderScene implements CreateSceneClass {
     };
 }
 
-export default new BasicShaderScene();
+export default new FresnelShaderScene();
