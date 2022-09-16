@@ -1,3 +1,10 @@
+/**
+ * This file demonstrates how to create a simple scene with GLSL shaders
+ * loaded from separate files.
+ *
+ * There are other ways to load shaders, see https://doc.babylonjs.com/advanced_topics/shaders/shaderCodeInBjs
+ */
+
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
