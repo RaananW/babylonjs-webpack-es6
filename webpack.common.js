@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-
 // App directory
 const appDirectory = fs.realpathSync(process.cwd());
 
@@ -35,6 +34,11 @@ module.exports = {
                 test: /\.tsx?$/,
                 loader: "ts-loader",
                 // sideEffects: true
+            },
+            {
+                test: /\.(glsl|vs|fs)$/,
+                loader: "ts-shader-loader",
+                exclude: /node_modules/,
             },
             {
                 test: /\.(png|jpg|gif|env|glb|gltf|stl)$/i,
