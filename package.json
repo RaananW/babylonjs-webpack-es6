@@ -4,11 +4,11 @@
     "description": "A simple scene using Babylon.js, typescript and webpack. What could go wrong?",
     "main": "index.ts",
     "dependencies": {
-        "@babylonjs/core": "^5.3.0",
-        "@babylonjs/gui-editor": "^5.5.0",
-        "@babylonjs/inspector": "^5.3.0",
-        "@babylonjs/loaders": "^5.3.0",
-        "@babylonjs/materials": "^5.3.0",
+        "@babylonjs/core": "^5.29.0",
+        "@babylonjs/gui-editor": "^5.29.0",
+        "@babylonjs/inspector": "^5.29.0",
+        "@babylonjs/loaders": "^5.29.0",
+        "@babylonjs/materials": "^5.29.0",
         "ammo.js": "github:kripken/ammo.js"
     },
     "devDependencies": {
