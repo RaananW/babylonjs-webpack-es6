@@ -3,8 +3,8 @@ import { Scene } from "@babylonjs/core/scene";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
-import { SphereBuilder } from "@babylonjs/core/Meshes/Builders/sphereBuilder";
-import { GroundBuilder } from "@babylonjs/core/Meshes/Builders/groundBuilder";
+import { CreateSphere } from "@babylonjs/core/Meshes/Builders/sphereBuilder";
+import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
 import { AmmoJSPlugin } from "@babylonjs/core/Physics/Plugins/ammoJSPlugin";
 import "@babylonjs/core/Physics/physicsEngineComponent";
 
@@ -39,7 +39,7 @@ class PhysicsSceneWithAmmo implements CreateSceneClass {
         light.intensity = 0.7;
     
         // Our built-in 'sphere' shape.
-        const sphere = SphereBuilder.CreateSphere(
+        const sphere = CreateSphere(
             "sphere",
             { diameter: 2, segments: 32 },
             scene
@@ -51,7 +51,7 @@ class PhysicsSceneWithAmmo implements CreateSceneClass {
         sphere.position.y = 5;
     
         // Our built-in 'ground' shape.
-        const ground = GroundBuilder.CreateGround(
+        const ground = CreateGround(
             "ground",
             { width: 6, height: 6 },
             scene

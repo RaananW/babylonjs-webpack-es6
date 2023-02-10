@@ -12,7 +12,7 @@ import { MeshBuilder } from "@babylonjs/core/Meshes/meshBuilder";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { Mesh } from "@babylonjs/core/Meshes/mesh";
 
-import * as Recast from "recast-detour";
+import Recast from "recast-detour";
 import { PointerEventTypes } from "@babylonjs/core/Events/pointerEvents";
 import { LinesMesh } from "@babylonjs/core/Meshes/linesMesh";
 import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
@@ -29,7 +29,7 @@ export class NavigationMeshRecast implements CreateSceneClass {
         canvas: HTMLCanvasElement
     ): Promise<Scene> => {
         // Casting to any will not be required in future versions of the recast plugin
-        const recast = await (Recast as any)()
+        const recast = await Recast()
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
         const navigationPlugin = new RecastJSPlugin(recast);
