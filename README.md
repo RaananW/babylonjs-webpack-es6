@@ -60,3 +60,8 @@ The rest? You should know already, this is why you are here.
 - Full debugging with any browser AND VS Code
 - (production) bundle builder.
 - eslint default typescript rules integrated
+
+## It takes too long to build
+
+To speed up production build time remove all of the scenes except for the one you want to build.
+This project is meant as a way to show different ways to use Babylon.js and not as a way to efficiently build a production-ready application.
