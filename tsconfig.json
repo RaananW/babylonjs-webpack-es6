@@ -12,6 +12,6 @@
         "skipLibCheck": true,
 		"preserveConstEnums":true,
         "sourceMap": true,
-        "rootDir": "src"
+        "rootDir": "./"
 	}
 }
