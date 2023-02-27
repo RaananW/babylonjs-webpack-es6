@@ -37,6 +37,11 @@ Note - the build process will be very slow if you keep all scenes for production
 
 Open the URL in a webgpu-enabled browser and add "?engine=webgpu" to the URL. If you want to add a different scene, add it as a query parameter: `http://localhost:8080/?scene=physicsWithAmmo&engine=webgpu`.
 
+## Running validation tests
+
+It is possible to run validation tests to the scenes using playwright. To run the tests, run `npm run test`. This will run the tests in headless mode.
+To configure the tests see the `/tests/` directory, and the `validation.spec.ts` file.
+
 ## What else can I do
 
 To lint your source code run `npm run lint`
