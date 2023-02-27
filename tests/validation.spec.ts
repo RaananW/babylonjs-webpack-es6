@@ -16,6 +16,7 @@ const scenes = [
   {
     name: 'Navigation mesh recast',
     url: '/?scene=navigationMeshRecast',
+    waitForNetworkIdle: true,
   },
   // {
   //   name: 'Physics (ammo)',
@@ -29,10 +30,18 @@ const engines = [
   // "WebGPU"
 ]
 
+test.beforeEach(async ({ page }) => {
+  await page.goto('/', { timeout: 120000 });
+});
+
+
 for (const scene of scenes) {
   for (const engine of engines) {
     test(`Render ${scene.name} with ${engine}`, async ({ page }, testInfo) => {
       await page.goto(scene.url);
+      if (scene.waitForNetworkIdle) {
+        await page.waitForLoadState('networkidle');
+      }
       if (scene.renderCount) {
         await page.evaluate(() => {
           const raf = window.requestAnimationFrame;
@@ -42,7 +51,7 @@ for (const scene of scenes) {
             return raf(cb);
           }
         });
-        
+
       }
       await page.waitForFunction(() => (window as any).scene && (window as any).scene.isReady(), { timeout: 5000 });
       // reset render count

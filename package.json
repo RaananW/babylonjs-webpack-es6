@@ -35,7 +35,8 @@
     "start:test": "npx webpack serve --config webpack.tests.js",
     "build:dev": "npx webpack --config webpack.dev.js",
     "build": "npx webpack --config webpack.prod.js",
-    "lint": "npx eslint . --ext .ts,.tsx"
+    "lint": "npx eslint . --ext .ts,.tsx",
+    "test": "npx playwright test"
   },
   "repository": {
     "type": "git",
