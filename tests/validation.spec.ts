@@ -27,7 +27,7 @@ const scenes = [
 
 const engines = [
   "WebGL2",
-  // "WebGPU"
+  "WebGPU"
 ]
 
 test.beforeEach(async ({ page }) => {
