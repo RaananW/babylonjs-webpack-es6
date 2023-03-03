@@ -1,29 +1,34 @@
 import { test, expect, } from '@playwright/test';
 
-const scenes = [
-  {
-    name: 'Default',
-    url: '/?scene=defaultWithTexture',
-  },
-  {
-    name: 'Fresnel Shader',
-    url: '/?scene=fresnelShader',
-  },
-  {
-    name: 'Load model and env',
-    url: '/?scene=loadModelAndEnv',
-  },
-  {
-    name: 'Navigation mesh recast',
-    url: '/?scene=navigationMeshRecast',
-    waitForNetworkIdle: true,
-  },
-  // {
-  //   name: 'Physics (ammo)',
-  //   url: '/?scene=physicsWithAmmo',
-  //   renderCount: 5,
-  // },
-]
+const scenes: {
+  name: string;
+  url: string;
+  waitForNetworkIdle?: boolean;
+  renderCount?: number;
+}[] = [
+    {
+      name: 'Default',
+      url: '/?scene=defaultWithTexture',
+    },
+    {
+      name: 'Fresnel Shader',
+      url: '/?scene=fresnelShader',
+    },
+    {
+      name: 'Load model and env',
+      url: '/?scene=loadModelAndEnv',
+    },
+    {
+      name: 'Navigation mesh recast',
+      url: '/?scene=navigationMeshRecast',
+      waitForNetworkIdle: true,
+    },
+    // {
+    //   name: 'Physics (ammo)',
+    //   url: '/?scene=physicsWithAmmo',
+    //   renderCount: 5,
+    // },
+  ]
 
 const engines = [
   "WebGL2",
