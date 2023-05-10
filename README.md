@@ -39,8 +39,13 @@ Open the URL in a webgpu-enabled browser and add "?engine=webgpu" to the URL. If
 
 ## Running validation tests
 
-It is possible to run validation tests to the scenes using playwright. To run the tests, run `npm run test`. This will run the tests in headless mode.
+It is possible to run validation tests to the scenes using playwright. To run the tests, run `npm run test:visuals`. This will run the tests in headless mode.
 To configure the tests see the `/tests/` directory, and the `validation.spec.ts` file.
+
+## Unit tests
+
+To run the unit tests, run `npm run test:unit`. This will run the tests in headless mode.
+To add new tests, add a file anywhere in the source folder, called `FILENAME.unit.spec.ts`. The tests will be automatically picked up by jest.
 
 ## What else can I do
 
