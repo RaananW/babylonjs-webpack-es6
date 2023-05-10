@@ -6,22 +6,26 @@
   "dependencies": {
     "@babylonjs/core": "^6.0.0",
     "@babylonjs/gui-editor": "^6.0.0",
+    "@babylonjs/havok": "^1.0.0",
     "@babylonjs/inspector": "^6.0.0",
     "@babylonjs/loaders": "^6.0.0",
     "@babylonjs/materials": "^6.0.0",
     "ammo.js": "github:kripken/ammo.js",
-    "@babylonjs/havok": "^1.0.0",
     "recast-detour": "^1.6.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.31.1",
+    "@types/jest": "^29.5.1",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12",
     "clean-webpack-plugin": "^4.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.9.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^29.5.0",
     "source-map-loader": "^4.0.1",
+    "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.2",
     "ts-shader-loader": "^2.0.1",
     "typescript": "^5.0.0",
@@ -37,7 +41,8 @@
     "build:dev": "npx webpack --config webpack.dev.js",
     "build": "npx webpack --config webpack.prod.js",
     "lint": "npx eslint . --ext .ts,.tsx",
-    "test": "npx playwright test"
+    "test:visuals": "npx playwright test",
+    "test:unit": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "repository": {
     "type": "git",
