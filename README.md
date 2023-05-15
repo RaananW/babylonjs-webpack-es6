@@ -42,6 +42,8 @@ Open the URL in a webgpu-enabled browser and add "?engine=webgpu" to the URL. If
 It is possible to run validation tests to the scenes using playwright. To run the tests, run `npm run test:visuals`. This will run the tests in headless mode.
 To configure the tests see the `/tests/` directory, and the `validation.spec.ts` file.
 
+To generate the snapshots after adjusting the tests you can run `npm run test:visuals -- --update-snapshots`. This will auto-generate the snapshots for the tests.
+
 ## Unit tests
 
 To run the unit tests, run `npm run test:unit`. This will run the tests in headless mode.
