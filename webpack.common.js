@@ -51,6 +51,14 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: /\.(tsx2|tmx)$/i,
+                use: [
+                    {
+                        loader: "xml-loader"
+                    },
+                ],
+            },
         ],
     },
     plugins: [
