@@ -5,7 +5,7 @@ import { Vector2, Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 import { PointLight } from "@babylonjs/core/Lights/pointLight";
 import { AssetsManager } from "@babylonjs/core/Misc/assetsManager";
-import { SpriteMap } from "@babylonjs/core";
+import { Color4, SpriteMap } from "@babylonjs/core";
 
 import "@babylonjs/core/Loading/loadingScreen";
 import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
@@ -26,6 +26,7 @@ export class TilEdSpriteMap implements CreateSceneClass {
     ): Promise<Scene> => {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
+        scene.clearColor = new Color4(1, 0, 1, 1);
         this.assetsManager = new AssetsManager(scene);
 
         void Promise.all([
@@ -71,7 +72,7 @@ export class TilEdSpriteMap implements CreateSceneClass {
             for (let j = 0; j < columns; j++ ) {
                 const frame: AtlasJsonFrame = {
                     filename: tileCount + ".png",
-                    frame: { x: 1 + j * tileWidth, y: 1 + imageHeight - (i + 1) * tileHeight, w: tileWidth, h: tileHeight  },
+                    frame: { x: j * tileWidth, y: imageHeight - (i + 1) * tileHeight, w: tileWidth, h: tileHeight  },
                     rotated: false,
                     trimmed: false,
                     spriteSourceSize: { x: 0, y: 0, w: tileWidth, h: tileHeight },
@@ -118,6 +119,7 @@ export class TilEdSpriteMap implements CreateSceneClass {
             {
                 stageSize: backgroundSize,
                 layerCount: 1,
+                //flipU: true, //Sometimes you need to flip, depending on the sprite format.
             },
             scene
         );
@@ -129,7 +131,13 @@ export class TilEdSpriteMap implements CreateSceneClass {
 
     private TilEdMapToSpriteMap(map: TilEdMap, tileset: TilEdTileset, atlasJson: AtlasJson, scene: Scene) : SpriteMap {
         // Load the spritesheet (with appropriate settings) associated with the JSON Atlas.
-        const spriteSheet = new Texture(tileset.image[0].$.source, scene);
+        const spriteSheet = new Texture(tileset.image[0].$.source, scene,
+            false,
+            true,
+            Texture.NEAREST_NEAREST_MIPNEAREST
+            );
+        spriteSheet.wrapU = Texture.CLAMP_ADDRESSMODE;
+        spriteSheet.wrapV = Texture.CLAMP_ADDRESSMODE;
 
         // Size of the map
         const width = parseInt(map.$.width);
@@ -143,8 +151,8 @@ export class TilEdSpriteMap implements CreateSceneClass {
             spriteSheet,
             {
                 stageSize: backgroundSize,
-                layerCount: 1 //map.layer.length,
-                //flipU: true//, //Sometimes you need to flip, depending on the sprite format.
+                layerCount: 1, //map.layer.length,
+                flipU: true//, //Sometimes you need to flip, depending on the sprite format.
             },
             scene
         );

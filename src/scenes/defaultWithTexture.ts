@@ -12,7 +12,7 @@ import { CreateSceneClass } from "../createScene";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 
 import grassTextureUrl from "../../assets/grass.jpg";
-import cityTextureUrl from "../../assets/galletcity_tiles.png";
+//import cityTextureUrl from "../../assets/galletcity_tiles.png";
 
 import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
@@ -84,7 +84,7 @@ export class DefaultSceneWithTexture implements CreateSceneClass {
 
         // Load a texture to be used as the ground material
         const groundMaterial = new StandardMaterial("ground material", scene);
-        groundMaterial.diffuseTexture = new Texture(cityTextureUrl, scene);
+        groundMaterial.diffuseTexture = new Texture(grassTextureUrl, scene);
 
         ground.material = groundMaterial;
         ground.receiveShadows = true;
