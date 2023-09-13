@@ -143,15 +143,15 @@ export class TilEdSpriteMap implements CreateSceneClass {
             spriteSheet,
             {
                 stageSize: backgroundSize,
-                layerCount: map.layer.length,
+                layerCount: 1 //map.layer.length,
                 //flipU: true//, //Sometimes you need to flip, depending on the sprite format.
             },
             scene
         );
 
         // Update the SpriteMap with the data from the TilEd map
-        //for (let z = 0; z < map.layer.length; z++) {
-            const layerData = this.CsvLayerToArray(map.layer[1].data[0]);
+        for (let z = 0; z < map.layer.length; z++) {
+            const layerData = this.CsvLayerToArray(map.layer[z].data[0]);
             for (let j = 0; j < height; j++) {
                 for (let i = 0; i < width; i++) {
                     const tileNumber = layerData[i + j * width];
@@ -159,11 +159,12 @@ export class TilEdSpriteMap implements CreateSceneClass {
                     // Tiled uses 0 for empty tiles, and regular tiles are 1-indexed
                     // AtlasJSON uses 0-index for frames
                     if (tileNumber > 0) {
-                        spriteMap.changeTiles(1, new Vector2(i, height - j - 1), tileNumber - 1);
+                        spriteMap.changeTiles(z, new Vector2(i, height - j - 1), tileNumber - 1);
                     }
                 }
             }
-        //}
+            break;
+        }
 
         return spriteMap;
     }
