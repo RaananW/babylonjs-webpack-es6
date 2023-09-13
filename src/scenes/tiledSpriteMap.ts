@@ -12,7 +12,7 @@ import { CreateSceneClass } from "../createScene";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 import citySpriteMapTextureUrl from "../../assets/galletcity_tiles.png";
 import cityTilesetUrl from "../../assets/galletcity_tiles.tsx2";
-
+import { DefaultLoadingScreen } from "@babylonjs/core/Loading";
 import grassTextureUrl from "../../assets/grass.jpg";
 import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
@@ -61,6 +61,7 @@ export class TilEdSpriteMap implements CreateSceneClass {
             Engine.TEXTUREFORMAT_RGBA //ImageFormageType RGBA
         );
 
+        console.log("Before atlas json");
         const atlasJson = this.TilEdTilesetToAtlasJson(cityTilesetUrl);
 
         // groundMaterial.diffuseTexture = new Texture(grassTextureUrl, scene);
@@ -143,14 +144,27 @@ export class TilEdSpriteMap implements CreateSceneClass {
             return;
         }
 
+        console.log("Before text task");
         const textTask = this.assetsManager.addTextFileTask("text task", tilesetUrl);
+        console.log("After text task");
         textTask.onSuccess = (task) => {
+            console.log("Before parsing DOM");
             const parser = new DOMParser();
             const document = parser.parseFromString(task.text, "application/xml");
             console.log(task.text);
             console.log(document);
         }
 
+        console.log("After text task 2");
+
+        textTask.onError = (task, message, exception) => {
+            console.log(message);
+            console.log(exception);
+        }
+
+        console.log("After text task 3");
+
+        this.assetsManager.load();
         const atlasJson: AtlasJson = {
             tiles: [],
             meta: {
