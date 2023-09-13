@@ -47,8 +47,8 @@ export class TilEdSpriteMap implements CreateSceneClass {
 
         const atlasJson = this.TilEdTilesetToAtlasJson(cityTilesetObject.tileset);
         if (atlasJson) {
-            this.DebugAtlasJson(cityTilesetObject.tileset, atlasJson, scene);
-            //this.TilEdMapToSpriteMap(cityMapObject.map, cityTilesetObject.tileset, atlasJson, scene);
+            //this.DebugAtlasJson(cityTilesetObject.tileset, atlasJson, scene);
+            this.TilEdMapToSpriteMap(cityMapObject.map, cityTilesetObject.tileset, atlasJson, scene);
         }
 
         return scene;
@@ -132,7 +132,9 @@ export class TilEdSpriteMap implements CreateSceneClass {
         const spriteSheet = new Texture(tileset.image[0].$.source, scene);
 
         // Size of the map
-        const backgroundSize = new Vector2(parseInt(map.$.width), parseInt(map.$.height));
+        const width = parseInt(map.$.width);
+        const height = parseInt(map.$.height);
+        const backgroundSize = new Vector2(width, height);
 
         // Create the sprite map
         const spriteMap = new SpriteMap(
@@ -148,20 +150,20 @@ export class TilEdSpriteMap implements CreateSceneClass {
         );
 
         // Update the SpriteMap with the data from the TilEd map
-        for (let z = 0; z < map.layer.length; z++) {
-            const layerData = this.CsvLayerToArray(map.layer[z].data[0]);
-            for (let i = 0; i < backgroundSize.x; i++) {
-                for (let j = 0; j < backgroundSize.y; j++) {
-                    const tileNumber = layerData[i * backgroundSize.y + j];
+        //for (let z = 0; z < map.layer.length; z++) {
+            const layerData = this.CsvLayerToArray(map.layer[1].data[0]);
+            for (let j = 0; j < height; j++) {
+                for (let i = 0; i < width; i++) {
+                    const tileNumber = layerData[i + j * width];
 
                     // Tiled uses 0 for empty tiles, and regular tiles are 1-indexed
                     // AtlasJSON uses 0-index for frames
                     if (tileNumber > 0) {
-                        spriteMap.changeTiles(z, new Vector2(i, j), tileNumber - 1);
+                        spriteMap.changeTiles(1, new Vector2(i, height - j - 1), tileNumber - 1);
                     }
                 }
             }
-        }
+        //}
 
         return spriteMap;
     }
