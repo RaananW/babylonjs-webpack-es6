@@ -78,7 +78,7 @@ export class TilEdSpriteMap implements CreateSceneClass {
                     spriteSourceSize: { x: 0, y: 0, w: tileWidth, h: tileHeight },
                     sourceSize: { w: tileWidth, h: tileHeight }
                 }
-
+                console.log(100);
                 atlasJsonFrames.push(frame);
                 tileCount++;
             }
@@ -90,7 +90,7 @@ export class TilEdSpriteMap implements CreateSceneClass {
                 app: "https://www.mapeditor.org/",
                 version: tileset.$.version,
                 image: tileset.image[0].$.source,
-                format:"",
+                format:"RGBA8888",
                 size: {
                     w: parseInt(tileset.image[0].$.width),
                     h: parseInt(tileset.image[0].$.height)
@@ -106,7 +106,10 @@ export class TilEdSpriteMap implements CreateSceneClass {
     private DebugAtlasJson(tileset: TilEdTileset, atlasJson: AtlasJson, scene: Scene) : void {
         const numberOfTiles = parseInt(tileset.$.tilecount);
         // Load the spritesheet (with appropriate settings) associated with the JSON Atlas.
-        const spriteSheet = new Texture(tileset.image[0].$.source, scene);
+        const spriteSheet = new Texture(tileset.image[0].$.source, scene,
+            true,
+            false,
+            Texture.TRILINEAR_SAMPLINGMODE);
 
         // Size of the map
         const backgroundSize = new Vector2(numberOfTiles, 1);
@@ -132,10 +135,10 @@ export class TilEdSpriteMap implements CreateSceneClass {
     private TilEdMapToSpriteMap(map: TilEdMap, tileset: TilEdTileset, atlasJson: AtlasJson, scene: Scene) : SpriteMap {
         // Load the spritesheet (with appropriate settings) associated with the JSON Atlas.
         const spriteSheet = new Texture(tileset.image[0].$.source, scene,
-            false,
-            true,
-            Texture.NEAREST_NEAREST_MIPNEAREST
-            );
+             true,
+             true,
+             Texture.TRILINEAR_SAMPLINGMODE
+        );
         spriteSheet.wrapU = Texture.CLAMP_ADDRESSMODE;
         spriteSheet.wrapV = Texture.CLAMP_ADDRESSMODE;
 
