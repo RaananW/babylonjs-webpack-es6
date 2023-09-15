@@ -12,7 +12,6 @@ import { CreateSceneClass } from "../createScene";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 
 import grassTextureUrl from "../../assets/grass.jpg";
-//import cityTextureUrl from "../../assets/galletcity_tiles.png";
 
 import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";

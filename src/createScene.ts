@@ -11,7 +11,7 @@ export interface CreateSceneModule {
 }
 
 export const getSceneModuleWithName = (
-    name = 'tiledSpriteMap'
+    name = 'fhlScene'
     //name = 'defaultWithTexture'
 ): Promise<CreateSceneClass> => {
     return import('./scenes/' + name).then((module: CreateSceneModule)=> {

@@ -28,10 +28,10 @@ export const babylonInit = async (): Promise<void> => {
             await webgpu.initAsync();
             engine = webgpu;
         } else {
-            engine = new Engine(canvas, true);
+            engine = new Engine(canvas, true, undefined, true);
         }
     } else {
-        engine = new Engine(canvas, true);
+        engine = new Engine(canvas, true, undefined, true);
     }
 
     // Create the scene
