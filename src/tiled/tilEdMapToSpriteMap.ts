@@ -63,6 +63,9 @@ export function tilEdMapToSpriteMap(map: TilEdMap, scene: Scene) : SpriteMap {
        scene
    );
 
+   // Last tile is transparent
+   const lastTile = parseInt(map.tileset[0].$.tilecount) - 1;
+
    // Update the SpriteMap with the data from the TilEd map
    for (let z = 0; z < map.layer.length; z++) {
        const layerData = csvLayerToArray(map.layer[z].data[0]);
@@ -75,7 +78,7 @@ export function tilEdMapToSpriteMap(map: TilEdMap, scene: Scene) : SpriteMap {
                if (tileNumber > 0) {
                    spriteMap.changeTiles(z, new Vector2(i, height - j - 1), tileNumber - 1);
                } else {
-                   spriteMap.changeTiles(z, new Vector2(i, height - j - 1), 167); // Transparent tile
+                   spriteMap.changeTiles(z, new Vector2(i, height - j - 1), lastTile); // Transparent tile
                }
            }
        }
