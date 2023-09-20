@@ -52,7 +52,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(tsx2|tmx)$/i,
+                test: /\.(tmx)$/i,
                 use: [
                     {
                         loader: "xml-loader"

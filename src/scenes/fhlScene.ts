@@ -10,8 +10,9 @@ import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
 
 import { CreateSceneClass } from "../createScene";
 
-import tilEdMap from "../../assets/city.tmx";
-import { tilEdMapToSpriteMap } from "../tiled/tilEdMapToSpriteMap";
+import cityTilEdMap from "../../assets/cityMap.tmx";
+import worldTilEdMap from "../../assets/worldMap.tmx";
+import { debugTileset, tilEdMapToSpriteMap } from "../tiled/tilEdMapToSpriteMap";
 
 export class FhlScene implements CreateSceneClass {
 
@@ -41,8 +42,7 @@ export class FhlScene implements CreateSceneClass {
         const light = new PointLight("Point", new Vector3(5, 10, 5), scene);
         light.intensity = 0.7;
 
-        //debugTileset(tiledMap.map, scene);
-        tilEdMapToSpriteMap(tilEdMap.map, scene);
+        tilEdMapToSpriteMap(cityTilEdMap.map, scene);
 
         return scene;
     };

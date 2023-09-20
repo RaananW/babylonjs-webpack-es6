@@ -12,4 +12,3 @@ declare module "ammo.js";
 
 // TilEd formats
 declare module '*.tmx';
-declare module '*.tsx2';

@@ -2,36 +2,39 @@ import { Scene, SpriteMap, Texture, Vector2 } from "@babylonjs/core";
 import { TilEdLayerData, TilEdMap, TilEdTileset } from "../types/tiled.types";
 import { AtlasJson, AtlasJsonFrame } from "../types/atlasjson.types";
 
-// export function debugTileset(map: TilEdMap, scene: Scene) : void {
-//     const numberOfTiles = parseInt(tileset.$.tilecount);
-//     // Load the spritesheet (with appropriate settings) associated with the JSON Atlas.
-//     const spriteSheet = new Texture(tileset.image[0].$.source, scene,
-//         true,
-//         true,
-//         Texture.TRILINEAR_SAMPLINGMODE
-//     );
-//     spriteSheet.wrapU = Texture.CLAMP_ADDRESSMODE;
-//     spriteSheet.wrapV = Texture.CLAMP_ADDRESSMODE;
+export function debugTileset(map: TilEdMap, scene: Scene) : void {
+    // Create the JSON atlas to map from the TilEd tileset to the BabylonJS SpriteMap
+    const atlasJson = tilEdTilesetToAtlasJson(map.tileset[0], map.$.version);
 
-//     // Size of the map
-//     const backgroundSize = new Vector2(numberOfTiles, 1);
+    // Load the spritesheet (with appropriate settings) associated with the JSON Atlas.
+    const spriteSheet = new Texture(map.tileset[0].image[0].$.source, scene,
+        true,
+        true,
+        Texture.TRILINEAR_SAMPLINGMODE
+    );
+    spriteSheet.wrapU = Texture.CLAMP_ADDRESSMODE;
+    spriteSheet.wrapV = Texture.CLAMP_ADDRESSMODE;
 
-//     // Create the sprite map
-//     const spriteMap = new SpriteMap(
-//         'TilEdMap',
-//         atlasJson,
-//         spriteSheet,
-//         {
-//             stageSize: backgroundSize,
-//             layerCount: 1
-//         },
-//         scene
-//     );
+    // Size of the map
+    const numberOfTiles = parseInt(map.tileset[0].$.tilecount);
+    const backgroundSize = new Vector2(numberOfTiles, 1);
 
-//     for (let i = 0; i < numberOfTiles; i++) {
-//         spriteMap.changeTiles(0, new Vector2(i, 0), i);
-//     }
-// }
+    // Create the sprite map
+    const spriteMap = new SpriteMap(
+        'TilEdMap',
+        atlasJson,
+        spriteSheet,
+        {
+            stageSize: backgroundSize,
+            layerCount: 1
+        },
+        scene
+    );
+
+    for (let i = 0; i < numberOfTiles; i++) {
+        spriteMap.changeTiles(0, new Vector2(i, 0), i);
+    }
+}
 
 export function tilEdMapToSpriteMap(map: TilEdMap, scene: Scene) : SpriteMap {
     // Create the JSON atlas to map from the TilEd tileset to the BabylonJS SpriteMap
