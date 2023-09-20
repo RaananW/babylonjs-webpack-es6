@@ -10,7 +10,7 @@ export function debugTileset(map: TilEdMap, scene: Scene) : void {
     const spriteSheet = new Texture(map.tileset[0].image[0].$.source, scene,
         true,
         true,
-        Texture.TRILINEAR_SAMPLINGMODE
+        Texture.NEAREST_NEAREST_MIPNEAREST
     );
     spriteSheet.wrapU = Texture.CLAMP_ADDRESSMODE;
     spriteSheet.wrapV = Texture.CLAMP_ADDRESSMODE;
@@ -31,6 +31,7 @@ export function debugTileset(map: TilEdMap, scene: Scene) : void {
         scene
     );
 
+    // Render the tiles
     for (let i = 0; i < numberOfTiles; i++) {
         spriteMap.changeTiles(0, new Vector2(i, 0), i);
     }
@@ -76,8 +77,8 @@ export function tilEdMapToSpriteMap(map: TilEdMap, scene: Scene) : SpriteMap {
            for (let i = 0; i < width; i++) {
                const tileNumber = layerData[i + j * width];
 
-               // TilEd uses 0 for empty tiles, and regular tiles are 1-indexed
-               // AtlasJSON uses 0-index for frames
+               // TilEd uses 0 for empty tiles, which we will replace by a transparent tile as layers are opaque in SpriteMap
+               // TilEd tiles are 1-indexed, while AtlasJSON uses 0-index for frames
                if (tileNumber > 0) {
                    spriteMap.changeTiles(z, new Vector2(i, height - j - 1), tileNumber - 1);
                } else {
@@ -109,7 +110,7 @@ function tilEdTilesetToAtlasJson(tileset: TilEdTileset, version: string): AtlasJ
                 spriteSourceSize: { x: 0, y: 0, w: tileWidth, h: tileHeight },
                 sourceSize: { w: tileWidth, h: tileHeight }
             }
-            console.log(100);
+
             atlasJsonFrames.push(frame);
             tileCount++;
         }
