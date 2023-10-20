@@ -27,7 +27,7 @@ To debug, open the browser's dev tool. Source maps are ready to be used. In case
 
 ## Loading different examples
 
-The `./src/scenes` directory contains a few examples of scenes that can be loaded. To load a specific scene, add a `?scene=FILENAME` to the URL (i.e. to load the ammo physics demo, use `http://localhost:8080/?scene=physicsWithAmmo`).
+The `./src/scenes` directory contains a few examples of scenes that can be loaded. To load a different scene change the import in `./src/createScene.ts` to the scene you want to load.
 
 More and more scenes will be slowly added.
 

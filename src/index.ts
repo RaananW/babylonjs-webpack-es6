@@ -1,15 +1,10 @@
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { WebGPUEngine } from "@babylonjs/core/Engines/webgpuEngine";
-import { getSceneModuleWithName } from "./createScene";
+import { getSceneModule } from "./createScene";
 import "@babylonjs/core/Engines/WebGPU/Extensions/engine.uniformBuffer";
 
-const getModuleToLoad = (): string | undefined =>
-    location.search.split("scene=")[1]?.split("&")[0];
-
 export const babylonInit = async (): Promise<void> => {
-    // get the module to load
-    const moduleName = getModuleToLoad();
-    const createSceneModule = await getSceneModuleWithName(moduleName);
+    const createSceneModule = getSceneModule();
     const engineType =
         location.search.split("engine=")[1]?.split("&")[0] || "webgl";
     // Execute the pretasks, if defined
