@@ -13,6 +13,7 @@ import "@babylonjs/core/Loading/loadingScreen";
 import "@babylonjs/loaders/glTF";
 import "@babylonjs/core/Materials/standardMaterial";
 import "@babylonjs/core/Materials/Textures/Loaders/envTextureLoader";
+import "@babylonjs/core/Animations/animatable"
 
 
 // digital assets
