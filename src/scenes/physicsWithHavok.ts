@@ -16,14 +16,14 @@ import { PhysicsBody } from "@babylonjs/core/Physics/v2/physicsBody";
 import { PhysicsMotionType } from "@babylonjs/core/Physics/v2/IPhysicsEnginePlugin";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 
-class PhysicsSceneWithAmmo implements CreateSceneClass {
+export class PhysicsSceneWithHavok implements CreateSceneClass {
     preTasks = [havokModule];
 
     createScene = async (engine: Engine, canvas: HTMLCanvasElement): Promise<Scene> => {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
 
-        
+
         // This creates and positions a free camera (non-mesh)
         const camera = new ArcRotateCamera("my first camera", 0, Math.PI / 3, 10, new Vector3(0, 0, 0), scene);
 
@@ -44,10 +44,10 @@ class PhysicsSceneWithAmmo implements CreateSceneClass {
 
         // Move the sphere upward at 4 units
         sphere.position.y = 4;
-        
+
         // Our built-in 'ground' shape.
         const ground = CreateGround("ground", { width: 10, height: 10 }, scene);
-        
+
         // PHYSICS!
         scene.enablePhysics(null, new HavokPlugin(true, await havokModule));
         // Create a sphere shape
@@ -90,4 +90,4 @@ class PhysicsSceneWithAmmo implements CreateSceneClass {
     };
 }
 
-export default new PhysicsSceneWithAmmo();
+export default new PhysicsSceneWithHavok();
