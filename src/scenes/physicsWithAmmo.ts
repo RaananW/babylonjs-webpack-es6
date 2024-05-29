@@ -1,4 +1,3 @@
-import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -13,11 +12,12 @@ import "@babylonjs/core/Materials/standardMaterial";
 import { PhysicsImpostor } from "@babylonjs/core/Physics/physicsImpostor";
 import { ammoModule, ammoReadyPromise } from "../externals/ammo";
 import { CreateSceneClass } from "../createScene";
+import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 
 export class PhysicsSceneWithAmmo implements CreateSceneClass {
     preTasks = [ammoReadyPromise];
 
-    createScene = async (engine: Engine, canvas: HTMLCanvasElement): Promise<Scene> => {
+    createScene = async (engine: AbstractEngine, canvas: HTMLCanvasElement): Promise<Scene> => {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
 

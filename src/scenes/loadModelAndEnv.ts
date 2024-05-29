@@ -1,4 +1,3 @@
-import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -19,10 +18,11 @@ import "@babylonjs/core/Animations/animatable"
 // digital assets
 import controllerModel from "../../assets/glb/samsung-controller.glb";
 import roomEnvironment from "../../assets/environment/room.env"
+import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 
 export class LoadModelAndEnvScene implements CreateSceneClass {
     createScene = async (
-        engine: Engine,
+        engine: AbstractEngine,
         canvas: HTMLCanvasElement
     ): Promise<Scene> => {
         // This creates a basic Babylon Scene object (non-mesh)

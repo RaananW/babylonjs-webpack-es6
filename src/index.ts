@@ -1,6 +1,7 @@
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { WebGPUEngine } from "@babylonjs/core/Engines/webgpuEngine";
 import { getSceneModule } from "./createScene";
+import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 
 export const babylonInit = async (): Promise<void> => {
     const createSceneModule = getSceneModule();
@@ -11,7 +12,7 @@ export const babylonInit = async (): Promise<void> => {
     // Get the canvas element
     const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
     // Generate the BABYLON 3D engine
-    let engine: Engine;
+    let engine: AbstractEngine;
     if (engineType === "webgpu") {
         const webGPUSupported = await WebGPUEngine.IsSupportedAsync;
         if (webGPUSupported) {

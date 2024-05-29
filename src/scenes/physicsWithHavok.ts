@@ -1,4 +1,3 @@
-import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import { Quaternion, Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -15,11 +14,12 @@ import { PhysicsShapeBox, PhysicsShapeSphere } from "@babylonjs/core/Physics/v2/
 import { PhysicsBody } from "@babylonjs/core/Physics/v2/physicsBody";
 import { PhysicsMotionType } from "@babylonjs/core/Physics/v2/IPhysicsEnginePlugin";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
+import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 
 export class PhysicsSceneWithHavok implements CreateSceneClass {
     preTasks = [havokModule];
 
-    createScene = async (engine: Engine, canvas: HTMLCanvasElement): Promise<Scene> => {
+    createScene = async (engine: AbstractEngine, canvas: HTMLCanvasElement): Promise<Scene> => {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
 
