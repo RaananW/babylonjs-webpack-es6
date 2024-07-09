@@ -5,7 +5,6 @@
  * There are other ways to load shaders, see https://doc.babylonjs.com/advanced_topics/shaders/shaderCodeInBjs
  */
 
-import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -28,26 +27,15 @@ import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
 
 import fresnelVertexShader from "../glsl/fresnel/vertex.glsl";
 import fresnelFragmentShader from "../glsl/fresnel/fragment.glsl";
+import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 
 export class FresnelShaderScene implements CreateSceneClass {
     createScene = async (
-        engine: Engine,
+        engine: AbstractEngine,
         canvas: HTMLCanvasElement
     ): Promise<Scene> => {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
-
-        void Promise.all([
-            import("@babylonjs/core/Debug/debugLayer"),
-            import("@babylonjs/inspector"),
-        ]).then((_values) => {
-            console.log(_values);
-            scene.debugLayer.show({
-                handleResize: true,
-                overlay: true,
-                globalRoot: document.getElementById("#root") || undefined,
-            });
-        });
 
         // This creates and positions a free camera (non-mesh)
         const camera = new ArcRotateCamera(

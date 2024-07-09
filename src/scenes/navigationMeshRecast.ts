@@ -1,4 +1,3 @@
-import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
@@ -18,6 +17,7 @@ import { LinesMesh } from "@babylonjs/core/Meshes/linesMesh";
 import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 
 import "@babylonjs/core/Culling/ray";
+import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 
 // import * as GUI from "@babylonjs/gui";
 
@@ -25,7 +25,7 @@ const agents: { idx: number, trf: TransformNode, mesh: Mesh, target: Mesh }[] = 
 
 export class NavigationMeshRecast implements CreateSceneClass {
     createScene = async (
-        engine: Engine,
+        engine: AbstractEngine,
         canvas: HTMLCanvasElement
     ): Promise<Scene> => {
         // Casting to any will not be required in future versions of the recast plugin

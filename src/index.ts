@@ -1,15 +1,10 @@
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { WebGPUEngine } from "@babylonjs/core/Engines/webgpuEngine";
-import { getSceneModuleWithName } from "./createScene";
-import "@babylonjs/core/Engines/WebGPU/Extensions/engine.uniformBuffer";
-
-const getModuleToLoad = (): string | undefined =>
-    location.search.split("scene=")[1]?.split("&")[0];
+import { getSceneModule } from "./createScene";
+import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 
 export const babylonInit = async (): Promise<void> => {
-    // get the module to load
-    const moduleName = getModuleToLoad();
-    const createSceneModule = await getSceneModuleWithName(moduleName);
+    const createSceneModule = getSceneModule();
     const engineType =
         location.search.split("engine=")[1]?.split("&")[0] || "webgl";
     // Execute the pretasks, if defined
@@ -17,10 +12,12 @@ export const babylonInit = async (): Promise<void> => {
     // Get the canvas element
     const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
     // Generate the BABYLON 3D engine
-    let engine: Engine;
+    let engine: AbstractEngine;
     if (engineType === "webgpu") {
         const webGPUSupported = await WebGPUEngine.IsSupportedAsync;
         if (webGPUSupported) {
+            // You can decide which WebGPU extensions to load when creating the engine. I am loading all of them
+            await import("@babylonjs/core/Engines/WebGPU/Extensions/");
             const webgpu = engine = new WebGPUEngine(canvas, {
                 adaptToDeviceRatio: true,
                 antialias: true,

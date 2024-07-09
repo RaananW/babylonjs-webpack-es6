@@ -1,4 +1,3 @@
-import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -17,26 +16,30 @@ import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
 
 import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
+import "@babylonjs/core/Culling/ray";
+import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 
 export class DefaultSceneWithTexture implements CreateSceneClass {
     createScene = async (
-        engine: Engine,
+        engine: AbstractEngine,
         canvas: HTMLCanvasElement
     ): Promise<Scene> => {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
 
-        void Promise.all([
-            import("@babylonjs/core/Debug/debugLayer"),
-            import("@babylonjs/inspector"),
-        ]).then((_values) => {
-            console.log(_values);
-            scene.debugLayer.show({
-                handleResize: true,
-                overlay: true,
-                globalRoot: document.getElementById("#root") || undefined,
-            });
-        });
+        // Uncomment to load the inspector (debugging) asynchronously
+
+        // void Promise.all([
+        //     import("@babylonjs/core/Debug/debugLayer"),
+        //     import("@babylonjs/inspector"),
+        // ]).then((_values) => {
+        //     console.log(_values);
+        //     scene.debugLayer.show({
+        //         handleResize: true,
+        //         overlay: true,
+        //         globalRoot: document.getElementById("#root") || undefined,
+        //     });
+        // });
 
         // This creates and positions a free camera (non-mesh)
         const camera = new ArcRotateCamera(
@@ -53,16 +56,6 @@ export class DefaultSceneWithTexture implements CreateSceneClass {
 
         // This attaches the camera to the canvas
         camera.attachControl(canvas, true);
-
-        // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-        // const light = new HemisphericLight(
-        //     "light",
-        //     new Vector3(0, 1, 0),
-        //     scene
-        // );
-
-        // // Default intensity is 1. Let's dim the light a small amount
-        // light.intensity = 0.7;
 
         // Our built-in 'sphere' shape.
         const sphere = CreateSphere(
