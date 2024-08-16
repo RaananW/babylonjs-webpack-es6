@@ -10,8 +10,9 @@ const appDirectory = fs.realpathSync(process.cwd());
 module.exports = {
     entry: path.resolve(appDirectory, "src/index.ts"),
     output: {
-        filename: "js/babylonBundle.js",
+        filename: "js/[name].js",
         path: path.resolve("./dist/"),
+        chunkFilename: "js/[name].[contenthash].js",
     },
     resolve: {
         extensions: [".ts", ".js"],
@@ -61,4 +62,40 @@ module.exports = {
             template: path.resolve(appDirectory, "public/index.html"),
         }),
     ],
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                webgpuShaders: {
+                    name: "webgpu-shaders",
+                    chunks: "all",
+                    priority: 50,
+                    enforce: true,
+                    test: (module) => /\/ShadersWGSL\//.test(module.resource),
+                },
+                webglShaders: {
+                    name: "webgl-shaders",
+                    chunks: "all",
+                    priority: 50,
+                    enforce: true,
+                    test: (module) => /\/Shaders\//.test(module.resource),
+                },
+                webgpuExtensions: {
+                    name: "webgpu-extensions",
+                    chunks: "all",
+                    priority: 50,
+                    enforce: true,
+                    test: (module) => /\/WebGPU\//.test(module.resource),
+                },
+                babylonBundle: {
+                    name: "babylonBundle",
+                    chunks: "all",
+                    priority: 30,
+                    reuseExistingChunk: true,
+                    test: (module) => /\/node_modules\/@babylonjs\//.test(module.resource),
+                },
+            },
+        },
+        usedExports: true,
+        minimize: true,
+    },
 };

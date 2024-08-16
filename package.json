@@ -4,6 +4,7 @@
   "description": "A simple scene using Babylon.js, typescript and webpack. What could go wrong?",
   "main": "index.ts",
   "dependencies": {
+    "@babylonjs/assets": "^5.20.0",
     "@babylonjs/core": "^7.0.0",
     "@babylonjs/gui-editor": "^7.0.0",
     "@babylonjs/havok": "^1.0.0",
