@@ -3,13 +3,13 @@ import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 import { CreateSceneClass } from "../createScene";
-import { SceneLoader } from "@babylonjs/core/Loading/sceneLoader";
+import { ImportMeshAsync } from "@babylonjs/core/Loading/sceneLoader";
 import { CubeTexture } from "@babylonjs/core/Materials/Textures/cubeTexture";
 import { EnvironmentHelper } from "@babylonjs/core/Helpers/environmentHelper";
 
 // required imports
 import "@babylonjs/core/Loading/loadingScreen";
-import "@babylonjs/loaders/glTF";
+import "@babylonjs/loaders/glTF/2.0/glTFLoader";
 import "@babylonjs/core/Materials/standardMaterial";
 import "@babylonjs/core/Materials/Textures/Loaders/envTextureLoader";
 import "@babylonjs/core/Animations/animatable"
@@ -65,14 +65,13 @@ export class LoadModelAndEnvScene implements CreateSceneClass {
         // Default intensity is 1. Let's dim the light a small amount
         light.intensity = 0.7;
 
-        const importResult = await SceneLoader.ImportMeshAsync(
-            "",
-            "",
+        const importResult = await ImportMeshAsync(
             controllerModel,
             scene,
-            undefined,
-            ".glb"
-        );
+            {
+                pluginExtension: ".glb",
+            }
+        )
 
         // just scale it so we can see it better
         importResult.meshes[0].scaling.scaleInPlace(10);
