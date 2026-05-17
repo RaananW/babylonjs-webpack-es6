@@ -1,7 +1,7 @@
 import type { Scene } from "@babylonjs/core/scene";
 
 // Change this import to check other scenes
-import { DefaultSceneWithTexture } from "./scenes/defaultWithTexture";
+import SceneCreated from "./scenes/defaultWithTexture";
 import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 
 export interface CreateSceneClass {
@@ -14,5 +14,5 @@ export interface CreateSceneModule {
 }
 
 export const getSceneModule = (): CreateSceneClass => {
-    return new DefaultSceneWithTexture();
+    return SceneCreated;
 }

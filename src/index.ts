@@ -17,7 +17,7 @@ export const babylonInit = async (): Promise<void> => {
         const webGPUSupported = await WebGPUEngine.IsSupportedAsync;
         if (webGPUSupported) {
             // You can decide which WebGPU extensions to load when creating the engine. I am loading all of them
-            await import("@babylonjs/core/Engines/WebGPU/Extensions/");
+            await import("@babylonjs/core/Engines/WebGPU/Extensions/index.js");
             const webgpu = engine = new WebGPUEngine(canvas, {
                 adaptToDeviceRatio: true,
                 antialias: true,

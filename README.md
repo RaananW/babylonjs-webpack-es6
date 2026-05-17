@@ -27,7 +27,22 @@ To debug, open the browser's dev tool. Source maps are ready to be used. In case
 
 ## Loading different examples
 
-The `./src/scenes` directory contains a few examples of scenes that can be loaded. To load a different scene change the import in `./src/createScene.ts` to the scene you want to load.
+The `./src/scenes` directory contains a few examples of scenes that can be loaded. The active scene is selected in `./src/createScene.ts`.
+
+To test a different scene:
+
+1. Open `./src/createScene.ts`.
+2. Change the `SceneCreated` import to the scene you want to test.
+
+For example, to test the Ammo physics scene:
+
+```ts
+import SceneCreated from "./scenes/physicsWithAmmo";
+```
+
+`getSceneModule()` returns `SceneCreated`, so no other change is needed.
+
+Scene selection is not controlled by a URL query parameter.
 
 More and more scenes will be slowly added.
 
@@ -35,7 +50,9 @@ Note - the build process will be very slow if you keep all scenes for production
 
 ## WebGPU? yes please
 
-Open the URL in a webgpu-enabled browser and add "?engine=webgpu" to the URL. If you want to add a different scene, add it as a query parameter: `http://localhost:8080/?scene=physicsWithAmmo&engine=webgpu`.
+Open the URL in a WebGPU-enabled browser and add `?engine=webgpu` to the URL: `http://localhost:8080/?engine=webgpu`.
+
+To use WebGPU with a different scene, first select the scene in `./src/createScene.ts` as described above, then open the URL with `?engine=webgpu`.
 
 ## Running validation tests
 
