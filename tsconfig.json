@@ -2,7 +2,7 @@
 	"compilerOptions": {
         "module": "esNext",
 		"target": "es2021",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"strict": true,
 		"noImplicitAny": true,
         "noImplicitReturns": true,
@@ -12,6 +12,7 @@
 		"preserveConstEnums":true,
         "sourceMap": true,
         "rootDir": "./",
+        "types": ["jest", "node"],
         "esModuleInterop": true,
 	}
 }

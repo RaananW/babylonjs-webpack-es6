@@ -14,7 +14,6 @@ import { Mesh } from "@babylonjs/core/Meshes/mesh";
 import Recast from "recast-detour";
 import { PointerEventTypes } from "@babylonjs/core/Events/pointerEvents";
 import { LinesMesh } from "@babylonjs/core/Meshes/linesMesh";
-import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 
 import "@babylonjs/core/Culling/ray";
 import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
@@ -104,7 +103,6 @@ export class NavigationMeshRecast implements CreateSceneClass {
             }
 
             let startingPoint: Vector3 | null;
-            let currentMesh: AbstractMesh;
             let pathLine: LinesMesh;
             const getGroundPosition = function () {
                 const pickinfo = scene.pick(scene.pointerX, scene.pointerY);
@@ -115,8 +113,7 @@ export class NavigationMeshRecast implements CreateSceneClass {
                 return null;
             }
 
-            const pointerDown = function (mesh: AbstractMesh) {
-                currentMesh = mesh;
+            const pointerDown = function () {
                 startingPoint = getGroundPosition();
                 if (startingPoint) { // we need to disconnect camera from canvas
                     setTimeout(function () {
@@ -137,7 +134,7 @@ export class NavigationMeshRecast implements CreateSceneClass {
                     case PointerEventTypes.POINTERDOWN:
                         if (pointerInfo?.pickInfo?.pickedMesh) {
                             console.log("pointer down", pointerInfo.pickInfo.pickedMesh.name);
-                            pointerDown(pointerInfo.pickInfo.pickedMesh)
+                            pointerDown()
                         }
                         break;
                 }
