@@ -4,13 +4,18 @@ updates:
     directory: /
     schedule:
       interval: weekly
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
     groups:
       babylonjs:
         patterns:
           - "@babylonjs/*"
       dev-dependencies:
         dependency-type: development
+    ignore:
+      # @typescript-eslint peers cap TypeScript below 6.1, so a major bump
+      # breaks `npm ci`. Drop this once the eslint tooling supports it.
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
 
   - package-ecosystem: github-actions
     directory: /
