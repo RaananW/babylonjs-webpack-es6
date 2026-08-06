@@ -19,7 +19,7 @@ router and no state management - keep it that way.
 | `src/scenes/*.ts` | One file per scene. |
 | `src/externals/*.ts` | Wrappers around wasm/external libs (Havok, Ammo) exposing a ready-promise. |
 | `src/glsl/` | Raw shaders, imported as strings via `ts-shader-loader`. |
-| `assets/` | Textures/models bundled through `url-loader`. |
+| `assets/` | Textures/models bundled through webpack asset modules (inlined below 8 KiB, emitted as files above). |
 | `public/` | Static files served as-is (`index.html`, workers). |
 | `tests/validation.spec.ts` | Playwright screenshot tests, one per scene per engine. |
 | `webpack.config.js` | The only webpack config. Switches behaviour via `--env production` / `--env test`. |

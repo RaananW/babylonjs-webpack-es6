@@ -136,7 +136,7 @@ The rest? You should know already, this is why you are here.
 ## What is covered
 
 - Latest typescript version
-- Simple texture loading (using url-loader)
+- Simple texture loading (using webpack asset modules)
 - dev-server will start on command (webpack-dev-server)
 - A working core-only example of babylon
 - Full debugging with any browser AND VS Code
