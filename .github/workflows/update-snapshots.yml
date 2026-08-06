@@ -1,0 +1,49 @@
+name: Update visual snapshots
+
+# Playwright screenshots are platform specific, so the Linux baselines used by CI have to
+# be generated on Linux. Run this workflow manually whenever a scene changes on purpose,
+# or after a Babylon.js upgrade changes how a scene renders.
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch to update the snapshots on
+        required: true
+        default: master
+
+permissions:
+  contents: write
+
+jobs:
+  update-snapshots:
+    name: Regenerate Linux snapshots
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Update snapshots
+        run: npm run test:visuals -- --update-snapshots
+
+      - name: Commit snapshots
+        run: |
+          if [ -z "$(git status --porcelain tests)" ]; then
+            echo "Snapshots are already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests
+          git commit -m "Update Playwright snapshots (linux)"
+          git push origin HEAD:${{ inputs.branch }}

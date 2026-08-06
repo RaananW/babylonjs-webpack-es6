@@ -40,13 +40,15 @@
     "webpack-merge": "^6.0.1"
   },
   "scripts": {
-    "start": "npx webpack serve --config webpack.dev.js",
-    "start:test": "npx webpack serve --config webpack.tests.js",
-    "build:dev": "npx webpack --config webpack.dev.js",
-    "build": "npx webpack --config webpack.prod.js",
-    "lint": "npx eslint \"**/*.{ts,tsx}\"",
-    "test:visuals": "npx playwright test",
-    "test:unit": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+    "start": "webpack serve",
+    "start:test": "webpack serve --env test",
+    "build": "webpack --env production",
+    "build:dev": "webpack",
+    "lint": "eslint \"**/*.{ts,tsx}\"",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:visuals": "playwright test",
+    "verify": "npm run lint && npm run typecheck && npm run test:unit"
   },
   "repository": {
     "type": "git",

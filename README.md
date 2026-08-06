@@ -1,6 +1,6 @@
 # Babylon.js, webpack and es6 modules
 
-A Babylon.js sample project using typescript, latest babylon.js es6 core module, webpack 4 with webpack dev server, hot loading, eslint, vscode support and more.
+A Babylon.js sample project using typescript, latest babylon.js es6 core module, webpack 5 with webpack dev server, hot loading, eslint, vscode support and more.
 
 ## Before getting started
 
@@ -66,9 +66,22 @@ If WebGPU is not supported by the browser, the template silently falls back to W
 ## Running validation tests
 
 It is possible to run validation tests to the scenes using playwright. To run the tests, run `npm run test:visuals`. This will run the tests in headless mode.
-To configure the tests see the `/tests/` directory, and the `validation.spec.ts` file.
+To configure the tests see the `/tests/` directory, and the `validation.spec.ts` file. Each scene listed there is loaded through its `?scene=` URL, on both WebGL2 and WebGPU.
 
-To generate the snapshots after adjusting the tests you can run `npm run test:visuals -- --update-snapshots`. This will auto-generate the snapshots for the tests.
+**Snapshots are platform specific.** Playwright stores them with an OS suffix
+(`...-chromium-linux.png`, `...-chromium-win32.png`, ...), because GPU drivers do not
+render identically across operating systems. A snapshot generated on one OS will not be
+used on another - you need a baseline for the platform you run on.
+
+- Locally: `npm run test:visuals -- --update-snapshots` generates the baselines for *your*
+  platform. Only commit them if you want that platform covered.
+- On CI: the Linux baselines are produced by the **Update visual snapshots** workflow
+  (`.github/workflows/update-snapshots.yml`), which you trigger manually from the Actions
+  tab. Run it once to seed the baselines, and again whenever a scene intentionally changes
+  or a Babylon.js upgrade changes how a scene renders.
+
+A small difference tolerance (`maxDiffPixelRatio`) is configured in `playwright.config.ts`
+so that minor driver noise does not fail the suite.
 
 ## Unit tests
 
@@ -77,9 +90,23 @@ To add new tests, add a file anywhere in the source folder, called `FILENAME.uni
 
 ## What else can I do
 
-To lint your source code run `npm run lint`
+| Command | What it does |
+| --- | --- |
+| `npm start` | Dev server with hot reload on `http://localhost:8080`. |
+| `npm run build` | Production (minified) bundle into `dist/`. |
+| `npm run build:dev` | Unminified development bundle into `dist/`. |
+| `npm run lint` | ESLint over all TypeScript files. |
+| `npm run typecheck` | `tsc --noEmit`, no build output. |
+| `npm run test:unit` | Jest unit tests. |
+| `npm run test:visuals` | Playwright screenshot tests. |
+| `npm run verify` | lint + typecheck + unit tests, the quick pre-commit check. |
 
-To build the bundle in order to host it, run `npm run build`. This will bundle your code in production mode, meaning is will minify the code.
+All of these are driven by a single `webpack.config.js`, which switches behaviour through
+`--env` (`--env production` for the production build, `--env test` for the static server the
+Playwright tests run against).
+
+Every push and pull request runs lint, typecheck, unit tests, a production build and the
+visual tests through GitHub Actions (`.github/workflows/ci.yml`).
 
 Building will take some time, as it compiles every sample (and emits a separate chunk for each). If you want to speed up the process, remove the scenes you don't need from `./src/scenes/` and from the registry in `./src/scenes/index.ts`.
 
@@ -113,6 +140,7 @@ The rest? You should know already, this is why you are here.
 - Full debugging with any browser AND VS Code
 - (production) bundle builder.
 - eslint default typescript rules integrated
+- GitHub Actions CI (lint, typecheck, unit tests, build, visual regression)
 - A scene registry with lazy-loaded scenes, selectable via `?scene=`
 - WebGPU support with automatic WebGL fallback (`?engine=webgpu`)
 - AI-agent friendly: see `AGENTS.md` and `.github/copilot-instructions.md`

@@ -22,6 +22,8 @@ router and no state management - keep it that way.
 | `assets/` | Textures/models bundled through `url-loader`. |
 | `public/` | Static files served as-is (`index.html`, workers). |
 | `tests/validation.spec.ts` | Playwright screenshot tests, one per scene per engine. |
+| `webpack.config.js` | The only webpack config. Switches behaviour via `--env production` / `--env test`. |
+| `.github/workflows/` | CI (`ci.yml`) and the manual snapshot refresh (`update-snapshots.yml`). |
 
 ## How to add a scene (the only supported way)
 
@@ -117,21 +119,31 @@ registering just the loader you need.
 | --- | --- |
 | `npm start` | Dev server with hot reload on `http://localhost:8080`. |
 | `npm run build` | Production bundle into `dist/`. |
+| `npm run build:dev` | Unminified development bundle. |
 | `npm run lint` | ESLint over all `.ts` files. |
+| `npm run typecheck` | `tsc --noEmit`. |
 | `npm run test:unit` | Jest unit tests (`*.unit.test.ts` / `*.unit.spec.ts`). |
 | `npm run test:visuals` | Playwright screenshot tests (starts its own dev server). |
+| `npm run verify` | lint + typecheck + unit tests. |
 
 ## Verification expected from an agent
 
 After any code change, run at minimum:
 
 ```sh
-npm run lint && npm run test:unit && npx tsc --noEmit
+npm run verify
 ```
 
-Run `npm run build` when touching webpack config, imports of assets, or dependencies.
-Visual tests require committed snapshots for the current platform - if they are missing
-for your OS, say so rather than regenerating snapshots for unrelated scenes.
+Run `npm run build` as well when touching `webpack.config.js`, asset imports, or dependencies.
+
+Visual tests need a committed snapshot **for the platform you are running on** - Playwright
+suffixes them with the OS (`-chromium-linux.png`, `-chromium-win32.png`). If no baseline
+exists for your platform, report that instead of regenerating snapshots, because
+`--update-snapshots` would rewrite every scene's baseline. Linux baselines are produced by
+the `update-snapshots.yml` workflow, not locally.
+
+CI (`.github/workflows/ci.yml`) runs exactly these commands, so a change that passes
+locally passes there.
 
 ## Conventions
 

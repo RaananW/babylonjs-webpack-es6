@@ -12,7 +12,14 @@ export default defineConfig({
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000
+    timeout: 5000,
+    toHaveScreenshot: {
+      /**
+       * GPU drivers are never bit-for-bit identical, so allow a small share of the
+       * pixels to differ before failing. Snapshots are still stored per platform.
+       */
+      maxDiffPixelRatio: 0.01,
+    },
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -23,7 +30,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   webServer: {
     command: 'npm run start:test',
@@ -40,6 +47,20 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    /**
+     * CI runners have no GPU. Rendering through SwiftShader keeps WebGL available and
+     * lets Chromium expose WebGPU, so the same suite can run locally and on CI.
+     */
+    launchOptions: process.env.CI
+      ? {
+          args: [
+            '--use-angle=swiftshader',
+            '--enable-unsafe-swiftshader',
+            '--enable-unsafe-webgpu',
+          ],
+        }
+      : {},
   },
 
   /* Configure projects for major browsers */
