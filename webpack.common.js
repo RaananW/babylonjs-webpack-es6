@@ -64,31 +64,34 @@ module.exports = {
     ],
     optimization: {
         splitChunks: {
+            // `chunks: "initial"` keeps code that only a lazily-loaded scene needs out of
+            // the initial payload. Modules shared between scenes are still deduplicated
+            // into a shared async chunk by webpack's default cache group.
             cacheGroups: {
                 webgpuShaders: {
                     name: "webgpu-shaders",
-                    chunks: "all",
+                    chunks: "initial",
                     priority: 50,
                     enforce: true,
                     test: (module) => /\/ShadersWGSL\//.test(module.resource),
                 },
                 webglShaders: {
                     name: "webgl-shaders",
-                    chunks: "all",
+                    chunks: "initial",
                     priority: 50,
                     enforce: true,
                     test: (module) => /\/Shaders\//.test(module.resource),
                 },
                 webgpuExtensions: {
                     name: "webgpu-extensions",
-                    chunks: "all",
+                    chunks: "initial",
                     priority: 50,
                     enforce: true,
                     test: (module) => /\/WebGPU\//.test(module.resource),
                 },
                 babylonBundle: {
                     name: "babylonBundle",
-                    chunks: "all",
+                    chunks: "initial",
                     priority: 30,
                     reuseExistingChunk: true,
                     test: (module) => /\/node_modules\/@babylonjs\//.test(module.resource),

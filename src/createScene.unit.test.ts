@@ -1,8 +1,27 @@
-import * as createSceneModule from './createScene';
+import { defaultSceneName, resolveSceneName, sceneNames, sceneRegistry } from './scenes';
 
-describe('createScene module', () => {
-    test('getSceneModuleWithName should return the default scene if nothing is passed', async () => {
-        const result = createSceneModule.getSceneModule();
-        expect(result.createScene).not.toBeFalsy();
+describe('scene registry', () => {
+    test('exposes at least one scene, all of them lazy loaders', () => {
+        expect(sceneNames.length).toBeGreaterThan(0);
+        for (const name of sceneNames) {
+            expect(typeof sceneRegistry[name]).toBe('function');
+        }
+    });
+
+    test('the default scene is registered', () => {
+        expect(sceneNames).toContain(defaultSceneName);
+    });
+
+    test('resolveSceneName returns the default scene for missing or unknown names', () => {
+        expect(resolveSceneName()).toBe(defaultSceneName);
+        expect(resolveSceneName(null)).toBe(defaultSceneName);
+        expect(resolveSceneName('doesNotExist')).toBe(defaultSceneName);
+        expect(resolveSceneName('constructor')).toBe(defaultSceneName);
+    });
+
+    test('resolveSceneName keeps registered names', () => {
+        for (const name of sceneNames) {
+            expect(resolveSceneName(name)).toBe(name);
+        }
     });
 });

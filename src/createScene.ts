@@ -1,11 +1,17 @@
 import type { Scene } from "@babylonjs/core/scene";
+import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
+import { resolveSceneName, sceneRegistry } from "./scenes";
 
-// Change this import to check other scenes
-import SceneCreated from "./scenes/defaultWithTexture";
-import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
-
+/**
+ * The contract every scene in `src/scenes` must fulfil.
+ */
 export interface CreateSceneClass {
-    createScene: (engine: AbstractEngine, canvas: HTMLCanvasElement) => Promise<Scene>;
+    /** Builds and returns the scene. Called once, after `preTasks` resolved. */
+    createScene: (
+        engine: AbstractEngine,
+        canvas: HTMLCanvasElement
+    ) => Promise<Scene>;
+    /** Optional promises (wasm modules, external libs) awaited before `createScene`. */
     preTasks?: Promise<unknown>[];
 }
 
@@ -13,6 +19,13 @@ export interface CreateSceneModule {
     default: CreateSceneClass;
 }
 
-export const getSceneModule = (): CreateSceneClass => {
-    return SceneCreated;
-}
+/**
+ * Lazily loads a scene by name. Unknown or missing names fall back to the
+ * default scene, so this never rejects because of a bad `?scene=` value.
+ */
+export const getSceneModule = async (
+    name?: string | null
+): Promise<CreateSceneClass> => {
+    const sceneModule = await sceneRegistry[resolveSceneName(name)]();
+    return sceneModule.default;
+};

@@ -9,10 +9,23 @@ import { EnvironmentHelper } from "@babylonjs/core/Helpers/environmentHelper";
 
 // required imports
 import "@babylonjs/core/Loading/loadingScreen";
-import "@babylonjs/loaders/glTF/2.0/glTFLoader";
 import "@babylonjs/core/Materials/standardMaterial";
 import "@babylonjs/core/Materials/Textures/Loaders/envTextureLoader";
 import "@babylonjs/core/Animations/animatable"
+
+// Loading a .glb needs two separate registrations:
+// 1. the glTF 2.0 loader itself (side-effect import), and
+// 2. the SceneLoader plugin, which since Babylon.js 9 is no longer registered by a
+//    side-effect import and has to be called explicitly.
+// Registering only glTF (instead of `registerBuiltInLoaders()`) keeps the other file
+// formats out of the bundle. `registerBuiltInGLTFExtensions()` lazily registers the
+// KHR_* extensions the model may rely on.
+import "@babylonjs/loaders/glTF/2.0/glTFLoader";
+import { RegisterGLTFFileLoader } from "@babylonjs/loaders/glTF/glTFFileLoader";
+import { registerBuiltInGLTFExtensions } from "@babylonjs/loaders/glTF/2.0/Extensions/dynamic";
+
+RegisterGLTFFileLoader();
+registerBuiltInGLTFExtensions();
 
 
 // digital assets
