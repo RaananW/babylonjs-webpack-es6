@@ -3,13 +3,9 @@ name: Update visual snapshots
 # Playwright screenshots are platform specific, so the Linux baselines used by CI have to
 # be generated on Linux. Run this workflow manually whenever a scene changes on purpose,
 # or after a Babylon.js upgrade changes how a scene renders.
+# Dispatch it from the Actions tab and pick the branch to update there.
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: Branch to update the snapshots on
-        required: true
-        default: master
 
 permissions:
   contents: write
@@ -20,8 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch }}
 
       - uses: actions/setup-node@v4
         with:
@@ -46,4 +40,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tests
           git commit -m "Update Playwright snapshots (linux)"
-          git push origin HEAD:${{ inputs.branch }}
+          git push origin HEAD:${{ github.ref_name }}

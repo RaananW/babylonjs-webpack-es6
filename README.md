@@ -76,9 +76,10 @@ used on another - you need a baseline for the platform you run on.
 - Locally: `npm run test:visuals -- --update-snapshots` generates the baselines for *your*
   platform. Only commit them if you want that platform covered.
 - On CI: the Linux baselines are produced by the **Update visual snapshots** workflow
-  (`.github/workflows/update-snapshots.yml`), which you trigger manually from the Actions
-  tab. Run it once to seed the baselines, and again whenever a scene intentionally changes
-  or a Babylon.js upgrade changes how a scene renders.
+  (`.github/workflows/update-snapshots.yml`). Trigger it from the Actions tab, picking the
+  branch to update; it regenerates the snapshots and commits them to that branch. Run it
+  once to seed the baselines, and again whenever a scene intentionally changes or a
+  Babylon.js upgrade changes how a scene renders.
 
 A small difference tolerance (`maxDiffPixelRatio`) is configured in `playwright.config.ts`
 so that minor driver noise does not fail the suite.
