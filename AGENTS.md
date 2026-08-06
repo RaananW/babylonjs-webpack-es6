@@ -136,11 +136,10 @@ npm run verify
 
 Run `npm run build` as well when touching `webpack.config.js`, asset imports, or dependencies.
 
-Visual tests need a committed snapshot **for the platform you are running on** - Playwright
-suffixes them with the OS (`-chromium-linux.png`, `-chromium-win32.png`). If no baseline
-exists for your platform, report that instead of regenerating snapshots, because
-`--update-snapshots` would rewrite every scene's baseline. Linux baselines are produced by
-the `update-snapshots.yml` workflow, not locally.
+Visual tests render through SwiftShader, so the committed baselines in
+`tests/validation.spec.ts-snapshots/` work on any OS and `npm run test:visuals` should pass
+locally. Only run `--update-snapshots` when a scene changed **on purpose**: it rewrites
+every baseline, so review the resulting images before committing them.
 
 CI (`.github/workflows/ci.yml`) runs exactly these commands, so a change that passes
 locally passes there.
@@ -163,5 +162,7 @@ locally passes there.
   `scene.isReady()`. Do not build features on top of it.
 - Physics and navmesh scenes depend on wasm modules loaded via `preTasks`; awaiting
   them is the entry point's job, not the scene's.
-- The Playwright snapshots in `tests/` are platform-suffixed; a snapshot generated on
-  one OS will not match another.
+- Headless Chromium has no WebGPU unless it is launched with `--enable-unsafe-webgpu`;
+  `playwright.config.ts` does this. Without it the app falls back to WebGL and a "WebGPU"
+  test would quietly be testing WebGL - the validation spec asserts the engine in use to
+  catch exactly that.

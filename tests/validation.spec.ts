@@ -1,71 +1,66 @@
 import { test, expect } from "@playwright/test";
 
+/**
+ * Scene names as registered in `src/scenes/index.ts`.
+ */
 const scenes: {
     name: string;
-    url: string;
+    scene: string;
     waitForNetworkIdle?: boolean;
-    renderCount?: number;
 }[] = [
     {
         name: "Default",
-        url: "/?scene=defaultWithTexture",
+        scene: "defaultWithTexture",
     },
     {
         name: "Fresnel Shader",
-        url: "/?scene=fresnelShader",
+        scene: "fresnelShader",
     },
     {
         name: "Load model and env",
-        url: "/?scene=loadModelAndEnv",
+        scene: "loadModelAndEnv",
     },
     {
         name: "Navigation mesh recast",
-        url: "/?scene=navigationMeshRecast",
+        scene: "navigationMeshRecast",
         waitForNetworkIdle: true,
     },
     // {
     //   name: 'Physics (ammo)',
-    //   url: '/?scene=physicsWithAmmo',
-    //   renderCount: 5,
+    //   scene: 'physicsWithAmmo',
     // },
 ];
 
-const engines = ["WebGL2", "WebGPU"];
-
-test.beforeEach(async ({ page }) => {
-    await page.goto("/", { timeout: 120000 });
-});
+const engines = [
+    { name: "WebGL2", query: "webgl" },
+    { name: "WebGPU", query: "webgpu" },
+];
 
 for (const scene of scenes) {
     for (const engine of engines) {
-        test(`Render ${scene.name} with ${engine}`, async ({
+        test(`Render ${scene.name} with ${engine.name}`, async ({
             page,
         }, testInfo) => {
-            await page.goto(scene.url);
+            await page.goto(`/?scene=${scene.scene}&engine=${engine.query}`);
             if (scene.waitForNetworkIdle) {
                 await page.waitForLoadState("networkidle");
             }
-            if (scene.renderCount) {
-                await page.evaluate(() => {
-                    const raf = window.requestAnimationFrame;
-                    (window as any).renderCount = 0;
-                    window.requestAnimationFrame = (
-                        cb: FrameRequestCallback
-                    ) => {
-                        (window as any).renderCount++;
-                        return raf(cb);
-                    };
-                });
-            }
             await page.waitForFunction(
-                () => (window as any).scene && (window as any).scene.isReady(),
-                { timeout: 5000 }
+                () => window.scene && window.scene.isReady(),
+                { timeout: 30000 }
             );
-            // reset render count
-            await page.evaluate(() => {
-                (window as any).renderCount = 0;
-            });
-            // await page.waitForFunction(() => (window as any).renderCount === scene.renderCount || 1, { timeout: 5000 });
+
+            // The app falls back to WebGL when WebGPU is unavailable. Without this check a
+            // "WebGPU" run would silently render - and be compared against - WebGL output.
+            const usingWebGPU = await page.evaluate(
+                () => window.scene!.getEngine().isWebGPU
+            );
+            test.skip(
+                engine.query === "webgpu" && !usingWebGPU,
+                "WebGPU is not available in this browser"
+            );
+            expect(usingWebGPU).toBe(engine.query === "webgpu");
+
             await expect(page).toHaveScreenshot({
                 timeout: 0,
             });

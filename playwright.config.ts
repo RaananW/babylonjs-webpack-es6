@@ -23,6 +23,11 @@ export default defineConfig({
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
+  /**
+   * Drop the `-<platform>` suffix from snapshot names. Rendering is forced through
+   * SwiftShader (see `launchOptions` below), so one baseline works on every OS.
+   */
+  snapshotPathTemplate: '{testDir}/{testFileName}-snapshots/{arg}-{projectName}{ext}',
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -49,18 +54,23 @@ export default defineConfig({
     trace: 'on-first-retry',
 
     /**
-     * CI runners have no GPU. Rendering through SwiftShader keeps WebGL available and
-     * lets Chromium expose WebGPU, so the same suite can run locally and on CI.
+     * Render everything through SwiftShader, on every machine.
+     *
+     * CI runners have no GPU, and no two GPUs rasterize identically anyway. Forcing
+     * software rendering makes screenshots reproducible across operating systems, and
+     * it is what makes WebGPU available at all in headless Chromium - without
+     * `--enable-unsafe-webgpu` the app silently falls back to WebGL and the "WebGPU"
+     * tests would compare WebGL renders.
      */
-    launchOptions: process.env.CI
-      ? {
-          args: [
-            '--use-angle=swiftshader',
-            '--enable-unsafe-swiftshader',
-            '--enable-unsafe-webgpu',
-          ],
-        }
-      : {},
+    launchOptions: {
+      args: [
+        '--enable-unsafe-webgpu',
+        '--enable-features=Vulkan',
+        '--use-vulkan=swiftshader',
+        '--use-angle=swiftshader',
+        '--enable-unsafe-swiftshader',
+      ],
+    },
   },
 
   /* Configure projects for major browsers */

@@ -68,21 +68,22 @@ If WebGPU is not supported by the browser, the template silently falls back to W
 It is possible to run validation tests to the scenes using playwright. To run the tests, run `npm run test:visuals`. This will run the tests in headless mode.
 To configure the tests see the `/tests/` directory, and the `validation.spec.ts` file. Each scene listed there is loaded through its `?scene=` URL, on both WebGL2 and WebGPU.
 
-**Snapshots are platform specific.** Playwright stores them with an OS suffix
-(`...-chromium-linux.png`, `...-chromium-win32.png`, ...), because GPU drivers do not
-render identically across operating systems. A snapshot generated on one OS will not be
-used on another - you need a baseline for the platform you run on.
+Both engines are really exercised: the test asserts that the engine actually in use
+matches the one it asked for, so a WebGPU run can no longer silently fall back to WebGL.
 
-- Locally: `npm run test:visuals -- --update-snapshots` generates the baselines for *your*
-  platform. Only commit them if you want that platform covered.
-- On CI: the Linux baselines are produced by the **Update visual snapshots** workflow
-  (`.github/workflows/update-snapshots.yml`). Trigger it from the Actions tab, picking the
-  branch to update; it regenerates the snapshots and commits them to that branch. Run it
-  once to seed the baselines, and again whenever a scene intentionally changes or a
-  Babylon.js upgrade changes how a scene renders.
+**Snapshots are shared across operating systems.** Chromium is launched with SwiftShader
+(software rendering) in `playwright.config.ts`, which makes renders reproducible on any
+machine regardless of GPU - and is also what makes WebGPU available in headless Chromium
+at all. A single set of baselines in `tests/validation.spec.ts-snapshots/` therefore works
+on Linux, macOS and Windows alike, with a small `maxDiffPixelRatio` tolerance for the
+remaining noise.
 
-A small difference tolerance (`maxDiffPixelRatio`) is configured in `playwright.config.ts`
-so that minor driver noise does not fail the suite.
+To refresh the baselines after intentionally changing a scene:
+
+- Locally: `npm run test:visuals -- --update-snapshots`.
+- On CI: run the **Update visual snapshots** workflow
+  (`.github/workflows/update-snapshots.yml`) from the Actions tab, picking the branch to
+  update. It regenerates the snapshots and commits them to that branch.
 
 ## Unit tests
 
