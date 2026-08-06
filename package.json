@@ -5,12 +5,12 @@
   "main": "index.ts",
   "dependencies": {
     "@babylonjs/assets": "^5.20.0",
-    "@babylonjs/core": "^9.16.1",
-    "@babylonjs/gui-editor": "^9.16.1",
-    "@babylonjs/havok": "^1.3.13",
-    "@babylonjs/inspector": "^9.16.1",
-    "@babylonjs/loaders": "^9.16.1",
-    "@babylonjs/materials": "^9.16.1",
+    "@babylonjs/core": "^9.19.0",
+    "@babylonjs/gui-editor": "^9.19.0",
+    "@babylonjs/havok": "^1.3.14",
+    "@babylonjs/inspector": "^9.19.0",
+    "@babylonjs/loaders": "^9.19.0",
+    "@babylonjs/materials": "^9.19.0",
     "ammo.js": "github:kripken/ammo.js",
     "recast-detour": "^1.6.1"
   },
