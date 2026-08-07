@@ -39,6 +39,7 @@
     "start": "webpack serve",
     "start:test": "webpack serve --env test",
     "build": "webpack --env production",
+    "build:demo": "webpack --env production --env demo",
     "build:dev": "webpack",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",

@@ -16,7 +16,7 @@ router and no state management - keep it that way.
 | `src/createEngine.ts` | Engine creation (WebGL / WebGPU) and engine-name resolution. |
 | `src/createScene.ts` | The `CreateSceneClass` contract and the lazy `getSceneModule()` loader. |
 | `src/scenes/index.ts` | **The scene registry** - names, labels, lazy loaders and visual-test opt-ins. |
-| `src/developmentControls.ts` | Development-only scene/engine picker; compiled out of production and tests. |
+| `src/developmentControls.ts` | Scene/engine picker; included in development and demo builds, excluded from normal production and tests. |
 | `src/scenes/*.ts` | One file per scene. |
 | `src/externals/*.ts` | Wrappers around wasm/external libs (Havok, Ammo) exposing a ready-promise. |
 | `src/glsl/` | Raw shaders, imported as strings via `ts-shader-loader`. |
@@ -131,6 +131,7 @@ install `@babylonjs/inspector` and load it dynamically with
 | --- | --- |
 | `npm start` | Dev server with hot reload on `http://localhost:8080`. |
 | `npm run build` | Production bundle into `dist/`. |
+| `npm run build:demo` | Production bundle with scene controls for GitHub Pages. |
 | `npm run build:dev` | Unminified development bundle. |
 | `npm run lint` | ESLint over all `.ts` files. |
 | `npm run typecheck` | `tsc --noEmit`. |
@@ -172,8 +173,8 @@ locally passes there.
 
 - `window.scene` is set in `src/index.ts` purely so the Playwright tests can await
   `scene.isReady()`. Do not build features on top of it.
-- `__DEV_CONTROLS__` is replaced by webpack. The scene picker must remain absent from
-  production and Playwright builds.
+- `__DEV_CONTROLS__` is replaced by webpack. The scene picker is present in development
+  and `build:demo`, but must remain absent from normal production and Playwright builds.
 - Physics and navmesh scenes depend on wasm modules loaded via `preTasks`; awaiting
   them is the entry point's job, not the scene's.
 - Headless Chromium has no WebGPU unless it is launched with `--enable-unsafe-webgpu`;

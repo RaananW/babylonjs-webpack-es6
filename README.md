@@ -107,6 +107,7 @@ To add new tests, add a file anywhere in the source folder, called `FILENAME.uni
 | --- | --- |
 | `npm start` | Dev server with hot reload on `http://localhost:8080`. |
 | `npm run build` | Production (minified) bundle into `dist/`. |
+| `npm run build:demo` | Production bundle with the scene/engine picker for the hosted demo. |
 | `npm run build:dev` | Unminified development bundle into `dist/`. |
 | `npm run lint` | ESLint over all TypeScript files. |
 | `npm run typecheck` | `tsc --noEmit`, no build output. |
@@ -124,7 +125,8 @@ visual tests through GitHub Actions (`.github/workflows/ci.yml`).
 ## Deploying to GitHub Pages
 
 The optional **Deploy to GitHub Pages** workflow builds and publishes `dist/` without requiring
-any local deployment tooling:
+any local deployment tooling. The hosted demo retains the scene/engine picker so visitors can
+explore every registered example:
 
 1. In the repository settings, open **Pages** and select **GitHub Actions** as the source.
 2. Open **Actions → Deploy to GitHub Pages → Run workflow**.

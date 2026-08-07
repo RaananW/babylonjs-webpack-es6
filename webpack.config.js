@@ -17,6 +17,7 @@ const appDirectory = fs.realpathSync(process.cwd());
 module.exports = (env = {}) => {
     const isProduction = !!env.production;
     const isTest = !!env.test;
+    const showSceneControls = !isTest && (!isProduction || !!env.demo);
 
     return {
         mode: isProduction ? "production" : "development",
@@ -65,7 +66,7 @@ module.exports = (env = {}) => {
         },
         plugins: [
             new DefinePlugin({
-                __DEV_CONTROLS__: JSON.stringify(!isProduction && !isTest),
+                __DEV_CONTROLS__: JSON.stringify(showSceneControls),
             }),
             new HtmlWebpackPlugin({
                 inject: true,
