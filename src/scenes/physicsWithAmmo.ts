@@ -10,7 +10,7 @@ import "@babylonjs/core/Physics/physicsEngineComponent";
 // If you don't need the standard material you will still need to import it since the scene requires it.
 import "@babylonjs/core/Materials/standardMaterial";
 import { PhysicsImpostor } from "@babylonjs/core/Physics/physicsImpostor";
-import { ammoModule, ammoReadyPromise } from "../externals/ammo";
+import { ammoReadyPromise, getAmmoModule } from "../externals/ammo";
 import { CreateSceneClass } from "../createScene";
 import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 
@@ -21,7 +21,7 @@ export class PhysicsSceneWithAmmo implements CreateSceneClass {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
 
-        scene.enablePhysics(null, new AmmoJSPlugin(true, ammoModule));
+        scene.enablePhysics(null, new AmmoJSPlugin(true, getAmmoModule()));
 
         // This creates and positions a free camera (non-mesh)
         const camera = new ArcRotateCamera("my first camera", 0, Math.PI / 3, 10, new Vector3(0, 0, 0), scene);

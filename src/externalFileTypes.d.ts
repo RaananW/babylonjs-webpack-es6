@@ -8,4 +8,13 @@ declare module "*.glb";
 declare module "*.stl";
 
 // Physics
-declare module "ammo.js";
+declare module "ammo.js" {
+    export type AmmoModule = Record<string, unknown>;
+
+    interface AmmoFactory {
+        new (): Promise<AmmoModule>;
+    }
+
+    const Ammo: AmmoFactory;
+    export default Ammo;
+}

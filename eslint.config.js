@@ -5,7 +5,7 @@ const tsPlugin = require("@typescript-eslint/eslint-plugin");
 
 module.exports = [
     {
-        ignores: ["node_modules/**", "dist/**", "output/**", "webpack.*"],
+        ignores: ["node_modules/**", "dist/**", "output/**"],
     },
     {
         files: ["**/*.js"],
@@ -35,7 +35,6 @@ module.exports = [
         },
         rules: {
             ...tsPlugin.configs.recommended.rules,
-            "@typescript-eslint/no-explicit-any": "off",
         },
     },
 ];

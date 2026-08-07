@@ -1,25 +1,29 @@
-# Babylon.js, webpack and es6 modules
+# Babylon.js, TypeScript and webpack
 
-A Babylon.js sample project using typescript, latest babylon.js es6 core module, webpack 5 with webpack dev server, hot loading, eslint, vscode support and more.
+A small Babylon.js starter using tree-shakable ES modules, strict TypeScript,
+webpack 5, hot reload, WebGL/WebGPU, automated tests and GitHub Actions.
 
 ## Before getting started
 
-This is a basic demo using Babylon's core module only. It is based on the [Getting started guide](https://doc.babylonjs.com/) at the documentation page. A lot of the engine's features are **not** covered here. I will slowly add more and more projects and more examples.
+This is a starter plus a focused set of examples. It intentionally has no UI framework,
+router or state library. Babylon features are imported from deep ES-module paths so unused
+code can be tree-shaken.
 
 If you have any questions, you are very much invited to the [Babylon.js forum](https://forum.babylonjs.com) where I am hanging around almost daily.
 
 ## Getting started
 
-To run the basic scene:
+Node.js 22.13 or newer (excluding Node 23), or Node.js 24+, is required. To run the basic scene:
 
 1. Clone / download this repository
-2. run `npm install` to install the needed dependencies.
-3. run `npm start`
+2. Run `npm install` to install the dependencies.
+3. Run `npm start`.
 4. A new window should open in your default browser. if it doesn't, open `http://localhost:8080`
-5. ????
-6. Profit
 
 Running `npm start` will start the webpack dev server with hot-reloading turned on. Open your favorite editor (mine is VSCode, but you can use nano. we don't discriminate) and start editing.
+
+Development builds show a small scene/engine picker in the top-right corner. It is generated
+from the scene registry and is removed from production and test builds.
 
 The entry point for the entire TypeScript application is `./src/index.ts`. It resolves the requested scene and engine from the URL, and stays intentionally small - engine creation lives in `./src/createEngine.ts`, and scene loading in `./src/createScene.ts` + `./src/scenes/index.ts`.
 
@@ -39,17 +43,21 @@ If the parameter is missing or unknown, the default scene (`defaultWithTexture`)
 
 ### Adding your own scene
 
-1. Create `./src/scenes/myScene.ts`, exporting a class implementing `CreateSceneClass`
+1. Create `./src/scenes/myScene.ts`, exporting an instance implementing `CreateSceneClass`
    as the default export (copy any existing scene as a starting point).
-2. Register it by adding one line to `./src/scenes/index.ts`:
+2. Register it in `./src/scenes/index.ts`:
 
 ```ts
-myScene: () => import("./myScene"),
+myScene: {
+    title: "My scene",
+    load: () => import("./myScene"),
+    visualTest: {}, // Optional: enables screenshot coverage.
+},
 ```
 
 3. Open `http://localhost:8080/?scene=myScene`.
 
-Each registry entry is a dynamic `import()`, so webpack emits a separate chunk per scene
+Each registry entry contains a dynamic `import()`, so webpack emits a separate chunk per scene
 and only the scene you request is downloaded.
 
 ## WebGPU? yes please
@@ -61,12 +69,15 @@ Open the URL in a WebGPU-enabled browser and add `engine=webgpu` to the URL:
 http://localhost:8080/?scene=fresnelShader&engine=webgpu
 ```
 
-If WebGPU is not supported by the browser, the template silently falls back to WebGL.
+If WebGPU is not supported, the template falls back to WebGL and logs a clear warning.
+The WebGPU engine itself is lazily downloaded only when requested.
 
 ## Running validation tests
 
-It is possible to run validation tests to the scenes using playwright. To run the tests, run `npm run test:visuals`. This will run the tests in headless mode.
-To configure the tests see the `/tests/` directory, and the `validation.spec.ts` file. Each scene listed there is loaded through its `?scene=` URL, on both WebGL2 and WebGPU.
+Run `npm run test:visuals` to validate scenes with Playwright. The test reads directly from
+`src/scenes/index.ts`, so every registered scene is smoke-tested on WebGL2 and WebGPU.
+Registry entries with `visualTest` also receive screenshot regression coverage; omit it for
+non-deterministic scenes such as physics simulations.
 
 Both engines are really exercised: the test asserts that the engine actually in use
 matches the one it asked for, so a WebGPU run can no longer silently fall back to WebGL.
@@ -110,6 +121,17 @@ Playwright tests run against).
 Every push and pull request runs lint, typecheck, unit tests, a production build and the
 visual tests through GitHub Actions (`.github/workflows/ci.yml`).
 
+## Deploying to GitHub Pages
+
+The optional **Deploy to GitHub Pages** workflow builds and publishes `dist/` without requiring
+any local deployment tooling:
+
+1. In the repository settings, open **Pages** and select **GitHub Actions** as the source.
+2. Open **Actions → Deploy to GitHub Pages → Run workflow**.
+
+The workflow is manual so forks do not unexpectedly publish on every push. Run it again whenever
+you want to update the deployed site.
+
 Building will take some time, as it compiles every sample (and emits a separate chunk for each). If you want to speed up the process, remove the scenes you don't need from `./src/scenes/` and from the registry in `./src/scenes/index.ts`.
 
 ## Working with AI agents
@@ -121,8 +143,8 @@ This template ships with instructions for AI coding assistants:
 - `.github/copilot-instructions.md` - a short version automatically picked up by GitHub Copilot.
 
 Because scenes are declared in a single registry (`./src/scenes/index.ts`) and every scene
-implements the same `CreateSceneClass` contract, "add a scene that does X" is a one-file +
-one-line change that an agent can perform reliably. If you fork this template for your own
+implements the same `CreateSceneClass` contract, "add a scene that does X" is a predictable
+one-file plus one-registry-entry change. If you fork this template for your own
 project, keep `AGENTS.md` updated - it is the cheapest way to keep assistants productive.
 
 ## What is this
@@ -135,7 +157,7 @@ The rest? You should know already, this is why you are here.
 
 ## What is covered
 
-- Latest typescript version
+- Strict TypeScript 6 (held below 6.1 until the ESLint tooling supports newer majors)
 - Simple texture loading (using webpack asset modules)
 - dev-server will start on command (webpack-dev-server)
 - A working core-only example of babylon
@@ -146,6 +168,11 @@ The rest? You should know already, this is why you are here.
 - A scene registry with lazy-loaded scenes, selectable via `?scene=`
 - WebGPU support with automatic WebGL fallback (`?engine=webgpu`)
 - AI-agent friendly: see `AGENTS.md` and `.github/copilot-instructions.md`
+
+The Inspector is intentionally not installed by default because it adds a large editor UI and
+its dependencies to every install. Add it when needed with
+`npm install @babylonjs/inspector`, then load it dynamically alongside
+`@babylonjs/core/Debug/debugLayer`.
 
 ## It takes too long to build
 

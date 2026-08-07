@@ -1,9 +1,15 @@
-import * as Ammo from "ammo.js";
+import Ammo, { type AmmoModule } from "ammo.js";
 
-export let ammoModule: any;
-export const ammoReadyPromise = new Promise((resolve) => {
-    new Ammo().then((res: unknown) => {
-        ammoModule = res;
-        resolve(res);
-    });
+let ammoModule: AmmoModule | undefined;
+
+export const ammoReadyPromise = new Ammo().then((module) => {
+    ammoModule = module;
+    return module;
 });
+
+export const getAmmoModule = (): AmmoModule => {
+    if (!ammoModule) {
+        throw new Error("Ammo.js was accessed before it finished loading.");
+    }
+    return ammoModule;
+};

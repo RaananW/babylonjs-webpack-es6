@@ -27,8 +27,7 @@ export class NavigationMeshRecast implements CreateSceneClass {
         engine: AbstractEngine,
         canvas: HTMLCanvasElement
     ): Promise<Scene> => {
-        // Casting to any will not be required in future versions of the recast plugin
-        const recast = await Recast()
+        const recast = await Recast();
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
         const navigationPlugin = new RecastJSPlugin(recast);

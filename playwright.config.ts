@@ -15,8 +15,7 @@ export default defineConfig({
     timeout: 5000,
     toHaveScreenshot: {
       /**
-       * GPU drivers are never bit-for-bit identical, so allow a small share of the
-       * pixels to differ before failing. Snapshots are still stored per platform.
+       * Allow a small share of pixels to differ across SwiftShader versions.
        */
       maxDiffPixelRatio: 0.01,
     },

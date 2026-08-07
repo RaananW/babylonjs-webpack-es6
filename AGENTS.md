@@ -15,15 +15,16 @@ router and no state management - keep it that way.
 | `src/index.ts` | Entry point. Reads `?scene=` / `?engine=`, boots the engine, runs the render loop. Keep it thin. |
 | `src/createEngine.ts` | Engine creation (WebGL / WebGPU) and engine-name resolution. |
 | `src/createScene.ts` | The `CreateSceneClass` contract and the lazy `getSceneModule()` loader. |
-| `src/scenes/index.ts` | **The scene registry** - the single source of truth for available scenes. |
+| `src/scenes/index.ts` | **The scene registry** - names, labels, lazy loaders and visual-test opt-ins. |
+| `src/developmentControls.ts` | Development-only scene/engine picker; compiled out of production and tests. |
 | `src/scenes/*.ts` | One file per scene. |
 | `src/externals/*.ts` | Wrappers around wasm/external libs (Havok, Ammo) exposing a ready-promise. |
 | `src/glsl/` | Raw shaders, imported as strings via `ts-shader-loader`. |
 | `assets/` | Textures/models bundled through webpack asset modules (inlined below 8 KiB, emitted as files above). |
 | `public/` | Static files served as-is (`index.html`, workers). |
-| `tests/validation.spec.ts` | Playwright screenshot tests, one per scene per engine. |
+| `tests/validation.spec.ts` | Registry-driven Playwright smoke tests plus opt-in screenshots. |
 | `webpack.config.js` | The only webpack config. Switches behaviour via `--env production` / `--env test`. |
-| `.github/workflows/` | CI (`ci.yml`) and the manual snapshot refresh (`update-snapshots.yml`). |
+| `.github/workflows/` | CI, snapshot refresh and optional GitHub Pages deployment. |
 
 ## How to add a scene (the only supported way)
 
@@ -57,15 +58,22 @@ export default new MyScene();
 2. Register it in `src/scenes/index.ts`:
 
 ```ts
-myScene: () => import("./myScene"),
+myScene: {
+    title: "My scene",
+    load: () => import("./myScene"),
+    visualTest: {}, // Omit for scenes that cannot render deterministically.
+},
 ```
 
 3. Open `http://localhost:8080/?scene=myScene`.
-4. If it should be screenshot-tested, add an entry to `scenes` in `tests/validation.spec.ts`
-   and run `npm run test:visuals -- --update-snapshots`.
+4. If `visualTest` is enabled, run
+   `npm run test:visuals -- --update-snapshots` and inspect the new baselines.
 
 Do **not** switch scenes by editing imports in `src/createScene.ts` or `src/index.ts` -
 the registry plus `?scene=` is the mechanism.
+
+Every registry entry is automatically smoke-tested on WebGL2 and WebGPU. Screenshot coverage
+is opt-in because simulations and time-dependent scenes are not deterministic.
 
 ## Babylon.js import rules (most common source of bugs)
 
@@ -112,6 +120,10 @@ Miss the side-effect import and you get `Unsupported version: 2.0` instead. See
 `src/scenes/loadModelAndEnv.ts` for the working reference. `registerBuiltInLoaders()` from
 `@babylonjs/loaders/dynamic` registers every format at once - convenient, but prefer
 registering just the loader you need.
+
+The Inspector is optional and deliberately not installed by the template. If a task needs it,
+install `@babylonjs/inspector` and load it dynamically with
+`@babylonjs/core/Debug/debugLayer`; do not add it to the initial bundle.
 
 ## Commands
 
@@ -160,6 +172,8 @@ locally passes there.
 
 - `window.scene` is set in `src/index.ts` purely so the Playwright tests can await
   `scene.isReady()`. Do not build features on top of it.
+- `__DEV_CONTROLS__` is replaced by webpack. The scene picker must remain absent from
+  production and Playwright builds.
 - Physics and navmesh scenes depend on wasm modules loaded via `preTasks`; awaiting
   them is the entry point's job, not the scene's.
 - Headless Chromium has no WebGPU unless it is launched with `--enable-unsafe-webgpu`;

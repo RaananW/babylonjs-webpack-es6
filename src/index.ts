@@ -1,28 +1,50 @@
 import { createEngine, resolveEngineType } from "./createEngine";
 import { getSceneModule } from "./createScene";
+import { resolveSceneName } from "./scenes";
+
+const getCanvas = (): HTMLCanvasElement => {
+    const canvas = document.getElementById("renderCanvas");
+    if (!(canvas instanceof HTMLCanvasElement)) {
+        throw new Error(
+            'Expected public/index.html to contain <canvas id="renderCanvas">.'
+        );
+    }
+    return canvas;
+};
+
+const showStartupError = (error: unknown): void => {
+    console.error("Unable to start the Babylon.js scene.", error);
+
+    const message = error instanceof Error ? error.message : String(error);
+    const errorElement = document.getElementById("startupError");
+    if (errorElement) {
+        errorElement.textContent = `Unable to start the scene: ${message}`;
+        errorElement.hidden = false;
+    }
+};
 
 export const babylonInit = async (): Promise<void> => {
     const params = new URLSearchParams(location.search);
+    const sceneName = resolveSceneName(params.get("scene"));
+    const engineType = resolveEngineType(params.get("engine"));
+    const canvas = getCanvas();
 
-    const createSceneModule = await getSceneModule(params.get("scene"));
-    // Execute the pretasks, if defined
+    if (__DEV_CONTROLS__) {
+        const { addDevelopmentControls } = await import(
+            "./developmentControls"
+        );
+        addDevelopmentControls(sceneName, engineType);
+    }
+
+    const createSceneModule = await getSceneModule(sceneName);
     await Promise.all(createSceneModule.preTasks || []);
 
-    const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
-    const engine = await createEngine(canvas, resolveEngineType(params.get("engine")));
-
+    const engine = await createEngine(canvas, engineType);
     const scene = await createSceneModule.createScene(engine, canvas);
 
-    // JUST FOR TESTING. Not needed for anything else
     window.scene = scene;
-
-    // Register a render loop to repeatedly render the scene
     engine.runRenderLoop(() => scene.render());
-
-    // Watch for browser/canvas resize events
     window.addEventListener("resize", () => engine.resize());
 };
 
-babylonInit().then(() => {
-    // scene started rendering, everything is initialized
-});
+void babylonInit().catch(showStartupError);

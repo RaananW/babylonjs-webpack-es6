@@ -1,14 +1,14 @@
 {
   "name": "babylonjs-typescript-webpack-template",
   "version": "0.0.1",
-  "description": "A simple scene using Babylon.js, typescript and webpack. What could go wrong?",
-  "main": "index.ts",
+  "private": true,
+  "description": "A Babylon.js starter using strict TypeScript and webpack.",
+  "engines": {
+    "node": "^22.13.0 || >=24"
+  },
   "dependencies": {
-    "@babylonjs/assets": "^5.20.0",
     "@babylonjs/core": "^9.20.0",
-    "@babylonjs/gui-editor": "^9.20.0",
     "@babylonjs/havok": "^1.3.14",
-    "@babylonjs/inspector": "^9.20.0",
     "@babylonjs/loaders": "^9.20.0",
     "@babylonjs/materials": "^9.20.0",
     "ammo.js": "github:kripken/ammo.js#0f92865b2f2cff3602ff2cf203101cde0edf2c37",
@@ -21,7 +21,6 @@
     "@types/node": "^26.1.2",
     "@typescript-eslint/eslint-plugin": "^8.66.0",
     "@typescript-eslint/parser": "^8.66.0",
-    "clean-webpack-plugin": "^4.0.0",
     "cross-env": "^10.1.0",
     "eslint": "^10.8.0",
     "globals": "^17.9.0",

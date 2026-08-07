@@ -26,6 +26,6 @@ export interface CreateSceneModule {
 export const getSceneModule = async (
     name?: string | null
 ): Promise<CreateSceneClass> => {
-    const sceneModule = await sceneRegistry[resolveSceneName(name)]();
+    const sceneModule = await sceneRegistry[resolveSceneName(name)].load();
     return sceneModule.default;
 };

@@ -1,8 +1,7 @@
 const path = require("path");
 const fs = require("fs");
+const { DefinePlugin } = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // App directory
 const appDirectory = fs.realpathSync(process.cwd());
@@ -27,6 +26,7 @@ module.exports = (env = {}) => {
             filename: "js/[name].js",
             path: path.resolve("./dist/"),
             chunkFilename: "js/[name].[contenthash].js",
+            clean: true,
         },
         resolve: {
             extensions: [".ts", ".js"],
@@ -37,9 +37,6 @@ module.exports = (env = {}) => {
         },
         module: {
             rules: [
-                {
-                    test: /\.m?js/,
-                },
                 {
                     test: /\.(js|mjs|jsx|ts|tsx)$/,
                     loader: "source-map-loader",
@@ -67,8 +64,9 @@ module.exports = (env = {}) => {
             ],
         },
         plugins: [
-            // new BundleAnalyzerPlugin(),
-            new CleanWebpackPlugin(),
+            new DefinePlugin({
+                __DEV_CONTROLS__: JSON.stringify(!isProduction && !isTest),
+            }),
             new HtmlWebpackPlugin({
                 inject: true,
                 template: path.resolve(appDirectory, "public/index.html"),

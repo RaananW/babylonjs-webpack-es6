@@ -6,8 +6,9 @@ The full contributor guide for AI agents lives in [`AGENTS.md`](../AGENTS.md) - 
 before making changes. The essentials:
 
 - **Add a scene** by creating `src/scenes/<name>.ts` (default-exporting an instance of a
-  class implementing `CreateSceneClass`) and registering it in `src/scenes/index.ts`.
-  Load it with `?scene=<name>`. Never switch scenes by editing imports.
+  class implementing `CreateSceneClass`) and adding its title/lazy loader metadata to
+  `src/scenes/index.ts`. Load it with `?scene=<name>`. Set `visualTest: {}` only for
+  deterministic scenes. Never switch scenes by editing imports.
 - **Import Babylon from deep paths** (`@babylonjs/core/scene`), never from the package
   root, and remember side-effect imports (`import "@babylonjs/core/Culling/ray";`) for
   features that register themselves.

@@ -1,48 +1,25 @@
 import { test, expect } from "@playwright/test";
-
-/**
- * Scene names as registered in `src/scenes/index.ts`.
- */
-const scenes: {
-    name: string;
-    scene: string;
-    waitForNetworkIdle?: boolean;
-}[] = [
-    {
-        name: "Default",
-        scene: "defaultWithTexture",
-    },
-    {
-        name: "Fresnel Shader",
-        scene: "fresnelShader",
-    },
-    {
-        name: "Load model and env",
-        scene: "loadModelAndEnv",
-    },
-    {
-        name: "Navigation mesh recast",
-        scene: "navigationMeshRecast",
-        waitForNetworkIdle: true,
-    },
-    // {
-    //   name: 'Physics (ammo)',
-    //   scene: 'physicsWithAmmo',
-    // },
-];
+import {
+    sceneNames,
+    sceneRegistry,
+    type SceneDefinition,
+} from "../src/scenes";
 
 const engines = [
     { name: "WebGL2", query: "webgl" },
     { name: "WebGPU", query: "webgpu" },
-];
+] as const;
 
-for (const scene of scenes) {
+for (const sceneName of sceneNames) {
+    const scene: SceneDefinition = sceneRegistry[sceneName];
     for (const engine of engines) {
-        test(`Render ${scene.name} with ${engine.name}`, async ({
-            page,
-        }, testInfo) => {
-            await page.goto(`/?scene=${scene.scene}&engine=${engine.query}`);
-            if (scene.waitForNetworkIdle) {
+        const action = scene.visualTest ? "Render" : "Load";
+        test(`${action} ${scene.title} with ${engine.name}`, async ({ page }) => {
+            const pageErrors: Error[] = [];
+            page.on("pageerror", (error) => pageErrors.push(error));
+
+            await page.goto(`/?scene=${sceneName}&engine=${engine.query}`);
+            if (scene.visualTest?.waitForNetworkIdle) {
                 await page.waitForLoadState("networkidle");
             }
             await page.waitForFunction(
@@ -50,8 +27,6 @@ for (const scene of scenes) {
                 { timeout: 30000 }
             );
 
-            // The app falls back to WebGL when WebGPU is unavailable. Without this check a
-            // "WebGPU" run would silently render - and be compared against - WebGL output.
             const usingWebGPU = await page.evaluate(
                 () => window.scene!.getEngine().isWebGPU
             );
@@ -61,10 +36,10 @@ for (const scene of scenes) {
             );
             expect(usingWebGPU).toBe(engine.query === "webgpu");
 
-            await expect(page).toHaveScreenshot({
-                timeout: 0,
-            });
-            expect(testInfo.errors).toHaveLength(0);
+            if (scene.visualTest) {
+                await expect(page).toHaveScreenshot({ timeout: 0 });
+            }
+            expect(pageErrors).toEqual([]);
         });
     }
 }

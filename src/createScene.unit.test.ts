@@ -4,7 +4,8 @@ describe('scene registry', () => {
     test('exposes at least one scene, all of them lazy loaders', () => {
         expect(sceneNames.length).toBeGreaterThan(0);
         for (const name of sceneNames) {
-            expect(typeof sceneRegistry[name]).toBe('function');
+            expect(typeof sceneRegistry[name].load).toBe("function");
+            expect(sceneRegistry[name].title.length).toBeGreaterThan(0);
         }
     });
 

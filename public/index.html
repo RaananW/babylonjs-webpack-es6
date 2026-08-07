@@ -21,11 +21,41 @@
         height: 100%;
         touch-action: none;
       }
+
+      .development-controls {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        display: flex;
+        gap: 12px;
+        padding: 10px 12px;
+        color: #fff;
+        background: rgb(20 20 20 / 85%);
+        border-radius: 6px;
+        font: 13px system-ui, sans-serif;
+      }
+
+      .development-controls label {
+        display: grid;
+        gap: 4px;
+      }
+
+      #startupError {
+        position: fixed;
+        inset: 20px;
+        overflow: auto;
+        padding: 20px;
+        color: #fff;
+        background: #8b1a1a;
+        font: 16px/1.5 system-ui, sans-serif;
+        white-space: pre-wrap;
+      }
     </style>
   </head>
 
   <body>
     <canvas id="renderCanvas" touch-action="none"></canvas>
+    <div id="startupError" role="alert" hidden></div>
   </body>
 
 </html>
