@@ -135,7 +135,7 @@ install `@babylonjs/inspector` and load it dynamically with
 | `npm run build:dev` | Unminified development bundle. |
 | `npm run lint` | ESLint over all `.ts` files. |
 | `npm run typecheck` | `tsc --noEmit`. |
-| `npm run test:unit` | Jest unit tests (`*.unit.test.ts` / `*.unit.spec.ts`). |
+| `npm run test:unit` | Vitest unit tests (`*.unit.test.ts` / `*.unit.spec.ts`). |
 | `npm run test:visuals` | Playwright screenshot tests (starts its own dev server). |
 | `npm run verify` | lint + typecheck + unit tests. |
 

@@ -27,7 +27,6 @@ module.exports = [
             globals: {
                 ...globals.browser,
                 ...globals.node,
-                ...globals.jest,
             },
         },
         plugins: {

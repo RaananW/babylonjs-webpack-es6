@@ -99,7 +99,8 @@ To refresh the baselines after intentionally changing a scene:
 ## Unit tests
 
 To run the unit tests, run `npm run test:unit`. This will run the tests in headless mode.
-To add new tests, add a file anywhere in the source folder, called `FILENAME.unit.spec.ts`. The tests will be automatically picked up by jest.
+To add new tests, add a file named `FILENAME.unit.spec.ts` or
+`FILENAME.unit.test.ts`. Vitest automatically picks it up.
 
 ## What else can I do
 
@@ -111,7 +112,7 @@ To add new tests, add a file anywhere in the source folder, called `FILENAME.uni
 | `npm run build:dev` | Unminified development bundle into `dist/`. |
 | `npm run lint` | ESLint over all TypeScript files. |
 | `npm run typecheck` | `tsc --noEmit`, no build output. |
-| `npm run test:unit` | Jest unit tests. |
+| `npm run test:unit` | Vitest unit tests. |
 | `npm run test:visuals` | Playwright screenshot tests. |
 | `npm run verify` | lint + typecheck + unit tests, the quick pre-commit check. |
 

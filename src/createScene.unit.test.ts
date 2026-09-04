@@ -1,3 +1,5 @@
+import { describe, expect, test } from "vitest";
+
 import { defaultSceneName, resolveSceneName, sceneNames, sceneRegistry } from './scenes';
 
 describe('scene registry', () => {

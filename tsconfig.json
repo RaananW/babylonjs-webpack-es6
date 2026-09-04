@@ -13,7 +13,7 @@
         "sourceMap": true,
         "skipLibCheck": true,
         "rootDir": "./",
-        "types": ["jest", "node"],
+        "types": ["node"],
         "esModuleInterop": true,
 	}
 }
